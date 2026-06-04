@@ -192,10 +192,10 @@
 
         .wp-badge-tamanho { background: #e2e8f0; color: #1e293b; }
         .wp-badge-entregue { background: #dcfce7; color: #15803d; }
-        .wp-badge-pendente { background: #fef9c3; color: #a16207; }
+        .wp-badge-encomendado { background: #e0f2fe; color: #0369a1; }
+        .wp-badge-porencomendar { background: #fef9c3; color: #a16207; }
         .wp-badge-pago { background: #dcfce7; color: #15803d; }
         .wp-badge-naopago { background: #fee2e2; color: #b91c1c; }
-        .wp-badge-sinal { background: #e0f2fe; color: #0369a1; }
 
         .wp-btn-delete-row {
             background-color: var(--wp-danger);
@@ -206,11 +206,22 @@
             border-radius: 4px;
             cursor: pointer;
         }
+        .wp-btn-reset {
+            background-color: #64748b;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            float: right;
+        }
     </style>
 </head>
 <body>
 
 <div class="wp-gestao-container">
+    <button class="wp-btn-reset" onclick="resetarDadosParaOOriginal()">⚠️ Restaurar Lista Original</button>
     <h2>STADIOPT - Gestão de Encomendas</h2>
 
     <div class="wp-panel">
@@ -238,16 +249,16 @@
                 <div style="display:flex; flex-direction:column;">
                     <label style="font-size:12px; font-weight:bold; color:#475569; margin-bottom:4px;">Estado</label>
                     <select id="wp_estado">
-                        <option value="Pendente">Pendente</option>
                         <option value="Entregue">Entregue</option>
+                        <option value="Encomendado">Encomendado</option>
+                        <option value="Por Encomendar">Por Encomendar</option>
                     </select>
                 </div>
                 <div style="display:flex; flex-direction:column;">
                     <label style="font-size:12px; font-weight:bold; color:#475569; margin-bottom:4px;">Pagamento</label>
                     <select id="wp_pagamento">
                         <option value="Pago">Pago</option>
-                        <option value="Não Pago">Não Pago</option>
-                        <option value="Sinal">Sinal</option>
+                        <option value="Não pago">Não pago</option>
                     </select>
                 </div>
             </div>
@@ -264,11 +275,12 @@
                 <input type="text" id="wp_searchFilter" placeholder="Escreve para filtrar...">
             </div>
             <div class="wp-filter-group">
-                <label for="wp_statusFilter">Entrega</label>
+                <label for="wp_statusFilter">Estado</label>
                 <select id="wp_statusFilter">
                     <option value="Todos">Todos</option>
-                    <option value="Pendente">Pendente</option>
                     <option value="Entregue">Entregue</option>
+                    <option value="Encomendado">Encomendado</option>
+                    <option value="Por Encomendar">Por Encomendar</option>
                 </select>
             </div>
             <div class="wp-filter-group">
@@ -276,8 +288,7 @@
                 <select id="wp_payFilter">
                     <option value="Todos">Todos</option>
                     <option value="Pago">Pago</option>
-                    <option value="Não Pago">Não Pago</option>
-                    <option value="Sinal">Sinal</option>
+                    <option value="Não pago">Não pago</option>
                 </select>
             </div>
         </div>
@@ -305,13 +316,42 @@
 </div>
 
 <script>
-    // Conecta com precisão às tuas gavetas antigas e novas para resgatar os dados reais
-    let Db = JSON.parse(localStorage.getItem('encomendasCamisolas')) || JSON.parse(localStorage.getItem('db')) || JSON.parse(localStorage.getItem('stadiopt_db')) || [];
+    // A tua lista original completa de dados fornecidos
+    const initialData = [
+        { id: 1, cust: "Paulo", team: "Portugal Pantera Negra", custom: "", size: "L", qty: 1, price: 15, status: "Entregue", pay: "Pago" },
+        { id: 1, cust: "Paulo", team: "Alemanha Preta", custom: "", size: "L", qty: 1, price: 15, status: "Entregue", pay: "Pago" },
+        { id: 2, cust: "Barbara", team: "Marrocos", custom: "", size: "L", qty: 1, price: 15, status: "Entregue", pay: "Pago" },
+        { id: 3, cust: "Rafael", team: "Portugal Pantera Negra", custom: "Ronaldo 7", size: "M", qty: 1, price: 15, status: "Entregue", pay: "Pago" },
+        { id: 3, cust: "Rafael", team: "Sporting", custom: "Trincao 17", size: "M", qty: 1, price: 15, status: "Entregue", pay: "Pago" },
+        { id: 4, cust: "Vinted", team: "Portugal Pantera Negra", custom: "", size: "L", qty: 1, price: 15, status: "Entregue", pay: "Pago" },
+        { id: 5, cust: "FB", team: "Porto", custom: "", size: "XL", qty: 1, price: 15, status: "Entregue", pay: "Pago" },
+        { id: 6, cust: "Vedat", team: "Portugal Pantera Negra", custom: "Narin 23", size: "M", qty: 1, price: 18, status: "Entregue", pay: "Pago" },
+        { id: 6, cust: "Vedat", team: "Turquia", custom: "Vedat 10", size: "XL", qty: 1, price: 18, status: "Entregue", pay: "Pago" },
+        { id: 7, cust: "OLX01", team: "Portugal Pantera Negra", custom: "RockNRoller 89", size: "M", qty: 1, price: 15, status: "Entregue", pay: "Pago" },
+        { id: 7, cust: "OLX01", team: "Portugal", custom: "", size: "S", qty: 1, price: 15, status: "Entregue", pay: "Pago" },
+        { id: 8, cust: "Gerson", team: "Portugal Pantera Negra", custom: "", size: "L", qty: 1, price: 15, status: "Entregue", pay: "Pago" },
+        { id: 9, cust: "Paulo", team: "Portugal Pantera Negra", custom: "", size: "XL", qty: 1, price: 15, status: "Entregue", pay: "Pago" },
+        { id: 9, cust: "Paulo", team: "Portugal Pantera Negra", custom: "", size: "XL", qty: 1, price: 15, status: "Entregue", pay: "Pago" },
+        { id: 10, cust: "Tamara", team: "Argentina", custom: "", size: "S (W)", qty: 1, price: 15, status: "Encomendado", pay: "Pago" },
+        { id: 11, cust: "Gerson", team: "Atletico Bilbao Verde", custom: "", size: "L", qty: 1, price: 15, status: "Encomendado", pay: "Não pago" },
+        { id: 12, cust: "OLX02", team: "Japao Pokemon", custom: "", size: "M", qty: 1, price: 15, status: "Encomendado", pay: "Não pago" },
+        { id: 12, cust: "OLX02", team: "Japao Pokemon", custom: "", size: "S", qty: 1, price: 15, status: "Encomendado", pay: "Não pago" },
+        { id: 12, cust: "OLX02", team: "Japao Supra", custom: "", size: "M", qty: 1, price: 15, status: "Encomendado", pay: "Não pago" },
+        { id: 12, cust: "OLX02", team: "Japao Slyline", custom: "", size: "M", qty: 1, price: 15, status: "Encomendado", pay: "Não pago" },
+        { id: 13, cust: "Walter", team: "Brasil", custom: "Zezinho 89", size: "XL", qty: 1, price: 15, status: "Encomendado", pay: "Não pago" },
+        { id: 13, cust: "Walter", team: "Brasil", custom: "Gabi G 9", size: "M (W)", qty: 1, price: 15, status: "Encomendado", pay: "Não pago" },
+        { id: 14, cust: "Home", team: "Portugal 2a", custom: "", size: "XL", qty: 1, price: 15, status: "Encomendado", pay: "Pago" },
+        { id: 14, cust: "Home", team: "Portugal Treino Azul", custom: "", size: "S", qty: 1, price: 15, status: "Encomendado", pay: "Pago" },
+        { id: 14, cust: "Home", team: "Portugal", custom: "", size: "M (W)", qty: 1, price: 15, status: "Encomendado", pay: "Pago" },
+        { id: 15, cust: "Barbara", team: "Marrocos 2a", custom: "", size: "L", qty: 1, price: 18, status: "Por Encomendar", pay: "Não pago" },
+        { id: 16, cust: "Vinted", team: "Franca 2a", custom: "Zaïre-Emery", size: "M", qty: 1, price: 18, status: "Por Encomendar", pay: "Não pago" }
+    ];
+
+    // Conecta exatamente à tua chave original: 'stadio_db_final'
+    let db = JSON.parse(localStorage.getItem('stadio_db_final')) || initialData;
 
     function save() {
-        localStorage.setItem('encomendasCamisolas', JSON.stringify(Db));
-        localStorage.setItem('db', JSON.stringify(Db));
-        localStorage.setItem('stadiopt_db', JSON.stringify(Db));
+        localStorage.setItem('stadio_db_final', JSON.stringify(db));
     }
 
     function addProductRow() {
@@ -337,7 +377,7 @@
 
     function updateDeleteButtons() {
         const rows = document.querySelectorAll('.product-row');
-        rows.forEach((row, index) => {
+        rows.forEach((row) => {
             const btn = row.querySelector('.btn-delete');
             if(btn) btn.style.display = rows.length === 1 ? 'none' : 'block';
         });
@@ -352,26 +392,28 @@
         const statusVal = document.getElementById('wp_statusFilter').value;
         const payVal = document.getElementById('wp_payFilter').value;
 
-        Db.forEach((enc, index) => {
-            // Mapeamento inteligente para aceitar chaves em português e inglês
-            const cliente = enc.cliente || enc.cust || enc.customer || '—';
-            const equipa = enc.artigo || enc.team || enc.equipa || '—';
-            const customizacao = enc.custom || enc.customizacao || '—';
-            const tamanho = enc.tamanho || enc.size || '—';
-            const quantidade = enc.qty || enc.quantidade || 1;
-            const preco = enc.preco || enc.price || 15.00;
-            const estado = enc.estado || enc.status || 'Pendente';
-            const pagamento = enc.pagamento || enc.pay || 'Não Pago';
+        db.forEach((enc, index) => {
+            const cliente = enc.cust || '—';
+            const equipa = enc.team || '—';
+            const customizacao = enc.custom || '—';
+            const tamanho = enc.size || '—';
+            const quantidade = enc.qty || 1;
+            const preco = enc.price || 15;
+            const estado = enc.status || 'Encomendado';
+            const pagamento = enc.pay || 'Não pago';
             const displayId = enc.id || (index + 1);
 
             const matchesSearch = cliente.toLowerCase().includes(searchVal) || equipa.toLowerCase().includes(searchVal);
             const matchesStatus = (statusVal === "Todos") || (estado === statusVal);
-            const matchesPay = (payVal === "Todos") || (pagamento === payVal);
+            const matchesPay = (payVal === "Todos") || (pagamento.toLowerCase() === payVal.toLowerCase());
 
             if (matchesSearch && matchesStatus && matchesPay) {
                 let payClass = 'wp-badge-naopago';
-                if(pagamento === 'Pago') payClass = 'wp-badge-pago';
-                if(pagamento === 'Sinal') payClass = 'wp-badge-sinal';
+                if(pagamento.toLowerCase() === 'pago') payClass = 'wp-badge-pago';
+
+                let statusClass = 'wp-badge-encomendado';
+                if(estado === 'Entregue') statusClass = 'wp-badge-entregue';
+                if(estado === 'Por Encomendar') statusClass = 'wp-badge-porencomendar';
 
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
@@ -382,7 +424,7 @@
                     <td><span class="wp-badge wp-badge-tamanho">${tamanho}</span></td>
                     <td>${quantidade}</td>
                     <td>${parseFloat(preco).toFixed(2)} €</td>
-                    <td><span class="wp-badge ${estado === 'Entregue' ? 'wp-badge-entregue' : 'wp-badge-pendente'}">${estado}</span></td>
+                    <td><span class="wp-badge ${statusClass}">${estado}</span></td>
                     <td><span class="wp-badge ${payClass}">${pagamento}</span></td>
                     <td><button class="wp-btn-delete-row" onclick="deleteItem(${displayId}, ${index})">Eliminar</button></td>
                 `;
@@ -393,11 +435,15 @@
 
     function deleteItem(id, index) {
         if(confirm("Eliminar este registo?")) {
-            if (Db[index] && Db[index].id === id) {
-                Db.splice(index, 1);
-            } else {
-                Db = Db.filter(item => item.id !== id);
-            }
+            db.splice(index, 1);
+            save();
+            refresh();
+        }
+    }
+
+    function resetarDadosParaOOriginal() {
+        if(confirm("Tens a certeza que queres voltar à lista de fábrica original? Isto apagará novos registos feitos hoje.")) {
+            db = [...initialData];
             save();
             refresh();
         }
@@ -410,9 +456,11 @@
         const pay = document.getElementById('wp_pagamento').value;
         const rows = document.querySelectorAll('.product-row');
 
+        // Cria um ID agrupado para o mesmo cliente, igual ao teu sistema original
+        const nextId = db.length > 0 ? Math.max(...db.map(i => i.id || 0)) + 1 : 1;
+
         rows.forEach(row => {
-            const nextId = Db.length > 0 ? Math.max(...Db.map(i => i.id || 0)) + 1 : 1;
-            Db.push({
+            db.push({
                 id: nextId,
                 cust: inputCust,
                 team: row.querySelector('.p_team').value,
