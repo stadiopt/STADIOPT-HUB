@@ -7,14 +7,14 @@
     <style>
         :root {
             /* Paleta STΛDIO - Light Minimalista Desportivo */
-            --bg-main: #f1f5f9;       /* Fundo cinza muito claro */
-            --bg-card: #ffffff;       /* Cartões puramente brancos */
-            --bg-input: #f8fafc;      /* Inputs ligeiramente acinzentados */
-            --border-color: #e2e8f0;  /* Bordas finas e subtis */
-            --text-main: #0f172a;     /* Texto principal escuro (quase preto) */
-            --text-muted: #64748b;    /* Texto secundário cinza */
-            --brand-primary: #0f172a; /* Logos e títulos em preto */
-            --brand-accent: #0284c7;  /* Azul desportivo vibrante para realces e tracking */
+            --bg-main: #f1f5f9;       
+            --bg-card: #ffffff;       
+            --bg-input: #f8fafc;      
+            --border-color: #e2e8f0;  
+            --text-main: #0f172a;     
+            --text-muted: #64748b;    
+            --brand-primary: #0f172a; 
+            --brand-accent: #0284c7;  
             
             --color-success: #059669;
             --color-success-bg: rgba(5, 150, 105, 0.1);
@@ -86,7 +86,7 @@
             display: flex;
             flex-direction: column;
             gap: 4px;
-            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
         }
 
         .kpi-title {
@@ -112,7 +112,6 @@
             border-radius: 8px;
             margin-bottom: 24px;
             gap: 4px;
-            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
         }
 
         .nav-tab {
@@ -202,12 +201,7 @@
             font-weight: 600;
         }
 
-        input.inline-tracking-input:focus {
-            border-color: var(--brand-accent);
-            background: var(--bg-card);
-        }
-
-        /* --- CARDS GRID LAYOUT --- */
+        /* --- CARDS LAYOUT --- */
         .cards-layout {
             display: grid;
             grid-template-columns: 1fr;
@@ -220,7 +214,6 @@
             }
         }
 
-        /* --- CARDS DESIGN --- */
         .order-item-card, .client-summary-card {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
@@ -229,7 +222,7 @@
             display: flex;
             flex-direction: column;
             gap: 14px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
         }
 
         .card-top {
@@ -241,7 +234,6 @@
         .client-name {
             font-size: 16px;
             font-weight: 700;
-            letter-spacing: 0.3px;
         }
 
         .badge-id {
@@ -270,17 +262,9 @@
             align-items: center;
         }
 
-        .detail-label {
-            color: var(--text-muted);
-        }
-
-        .detail-value {
-            font-weight: 600;
-        }
-
-        .customization-text {
-            color: var(--brand-accent);
-        }
+        .detail-label { color: var(--text-muted); }
+        .detail-value { font-weight: 600; }
+        .customization-text { color: var(--brand-accent); }
 
         .card-selectors {
             display: grid;
@@ -288,12 +272,10 @@
             gap: 8px;
         }
 
-        /* Selects Internos Estilizados */
         select.status-select, select.pay-select { 
             font-weight: 700; 
             font-size: 12px; 
             text-align: center;
-            cursor: pointer;
         }
         select.s-entregue { background: var(--color-success-bg); color: var(--color-success); border-color: transparent; }
         select.s-encomendado { background: rgba(2, 132, 199, 0.1); color: var(--brand-accent); border-color: transparent; }
@@ -312,21 +294,12 @@
             font-size: 12px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
         }
 
         .btn-action-delete:hover {
             background: var(--color-danger-bg);
             color: var(--color-danger);
             border-color: rgba(220, 38, 38, 0.3);
-        }
-
-        /* --- CLIENTS OVERVIEW --- */
-        .client-financial-clean {
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
         .history-panel {
@@ -354,14 +327,8 @@
             font-weight: 700;
             cursor: pointer;
             width: 100%;
-            transition: background 0.2s;
         }
 
-        .btn-view-history:hover {
-            background: var(--border-color);
-        }
-
-        /* --- FORM STYLING --- */
         .form-section-title {
             font-size: 12px;
             font-weight: 800;
@@ -384,7 +351,6 @@
             border: 1px solid rgba(220, 38, 38, 0.2);
             border-radius: 6px;
             cursor: pointer;
-            font-weight: bold;
         }
 
         .btn-add-item {
@@ -398,12 +364,6 @@
             font-weight: 700;
             width: 100%;
             margin-bottom: 24px;
-            transition: all 0.2s;
-        }
-
-        .btn-add-item:hover {
-            border-color: var(--brand-primary);
-            background: rgba(0, 0, 0, 0.02);
         }
 
         .btn-submit-order {
@@ -417,20 +377,6 @@
             cursor: pointer;
             width: 100%;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: opacity 0.2s;
-        }
-
-        .btn-submit-order:hover {
-            opacity: 0.9;
-        }
-
-        .loading-text {
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 14px;
-            padding: 40px;
-            grid-column: span 3;
         }
     </style>
 </head>
@@ -438,6 +384,7 @@
 
 <div class="dashboard-container">
     
+    <!-- BRAND HEADER -->
     <div class="dash-header">
         <svg class="logo-svg" viewBox="0 0 100 100">
             <path d="M50 15 L82 85 L64 85 L50 51 L36 85 L18 85 Z" />
@@ -445,6 +392,7 @@
         <h1>STΛDIO</h1>
     </div>
 
+    <!-- METRICS -->
     <div class="metrics-grid">
         <div class="kpi-card">
             <span class="kpi-title">Total Vendas</span>
@@ -464,12 +412,14 @@
         </div>
     </div>
 
+    <!-- NAVIGATION BAR -->
     <div class="navigation-bar">
         <button class="nav-tab active" onclick="switchSection('lista-sec')">📦 Encomendas</button>
         <button class="nav-tab" onclick="switchSection('clientes-sec')">👤 Clientes</button>
         <button class="nav-tab" onclick="switchSection('novo-sec')">➕ Nova Venda</button>
     </div>
 
+    <!-- SECTION 1: ORDERS -->
     <div id="lista-sec" class="tab-content active">
         <div class="clean-panel">
             <div class="filter-row">
@@ -491,11 +441,10 @@
                 </div>
             </div>
         </div>
-        <div class="cards-layout" id="cardsContainer">
-            <div class="loading-text">A estabelecer ligação segura à nuvem STΛDIO...</div>
-        </div>
+        <div class="cards-layout" id="cardsContainer"></div>
     </div>
 
+    <!-- SECTION 2: CLIENTS -->
     <div id="clientes-sec" class="tab-content">
         <div class="clean-panel">
             <input type="text" id="clientSearchFilter" placeholder="Filtrar por nome do cliente...">
@@ -503,6 +452,7 @@
         <div class="cards-layout" id="clientsContainer"></div>
     </div>
 
+    <!-- SECTION 3: NEW ORDER -->
     <div id="novo-sec" class="tab-content">
         <div class="clean-panel">
             <form id="orderForm">
@@ -549,32 +499,41 @@
 </div>
 
 <script>
-    // ⚠️ COLOCA AQUI O TEU LINK DO GOOGLE APPS SCRIPT
-    const GOOGLE_API_URL = "O_TEU_URL_DA_APLICACAO_WEB_AQUI";
+    // Base de dados padrão que será carregada caso o LocalStorage esteja vazio
+    const defaultData = [
+        { id: 1710000000001, cust: "Gonçalo", team: "Al Nassr Home v2", custom: "GONÇALO 7", size: "M", qty: 1, price: 15.00, status: "Entregue", pay: "Pago", tracking: "" },
+        { id: 1710000000002, cust: "Gonçalo", team: "Portugal Home 2024", custom: "CRISTIANO 7", size: "L", qty: 1, price: 15.00, status: "Encomendado", pay: "Pago", tracking: "LS123456789CH" },
+        { id: 1710000000003, cust: "Mariana Silva", team: "Real Madrid Away", custom: "MBAPPÉ 9", size: "S", qty: 1, price: 15.00, status: "Por Encomendar", pay: "Não pago", tracking: "" },
+        { id: 1710000000004, cust: "Mariana Silva", team: "Arsenal Home", custom: "", size: "M", qty: 1, price: 15.00, status: "Entregue", pay: "Pago", tracking: "" },
+        { id: 1710000000005, cust: "Carlos Santos", team: "Sporting CP Home", custom: "GYÖKERES 9", size: "XL", qty: 2, price: 15.00, status: "Encomendado", pay: "Não pago", tracking: "SPO987654" }
+    ];
 
     let db = [];
+
+    // Inicializa carregando do LocalStorage ou do histórico base padrão
+    function carregarDados() {
+        const localData = localStorage.getItem('stadio_db');
+        if (localData) {
+            db = JSON.parse(localData);
+        } else {
+            db = defaultData;
+            salvarDados();
+        }
+        calculateMetrics();
+        refreshUI();
+    }
+
+    function salvarDados() {
+        localStorage.setItem('stadio_db', JSON.stringify(db));
+    }
 
     function switchSection(tabId) {
         document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
         document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
-
         document.getElementById(tabId).classList.add('active');
         
         const btnIndex = tabId === 'lista-sec' ? 0 : tabId === 'clientes-sec' ? 1 : 2;
         document.querySelectorAll('.nav-tab')[btnIndex].classList.add('active');
-    }
-
-    async function carregarDadosDaNuvem() {
-        try {
-            const response = await fetch(GOOGLE_API_URL);
-            db = await response.json();
-            calculateMetrics();
-            refreshUI();
-        } catch (error) {
-            console.error("Erro de sincronização:", error);
-            db = [];
-            refreshUI();
-        }
     }
 
     function calculateMetrics() {
@@ -585,12 +544,8 @@
         db.forEach(item => {
             let itemCost = parseFloat(item.price || 15) * (parseInt(item.qty) || 1);
             totalSales += itemCost;
-            if(item.pay.toLowerCase() !== 'pago') {
-                pendingCash += itemCost;
-            }
-            if(item.status.toLowerCase() === 'entregue') {
-                deliveredCount++;
-            }
+            if(item.pay.toLowerCase() !== 'pago') pendingCash += itemCost;
+            if(item.status.toLowerCase() === 'entregue') deliveredCount++;
         });
 
         document.getElementById('kpi_total_sales').innerText = totalSales.toFixed(2) + '€';
@@ -599,66 +554,31 @@
         document.getElementById('kpi_delivered').innerText = deliveredCount;
     }
 
-    async function updateRowStatus(globalIndex, newStatus) {
+    function updateRowStatus(globalIndex, newStatus) {
         db[globalIndex].status = newStatus;
+        salvarDados();
         calculateMetrics();
         refreshUI();
-        
-        await fetch(GOOGLE_API_URL, {
-            method: "POST",
-            body: JSON.stringify({
-                action: "update",
-                id: db[globalIndex].id,
-                cust: db[globalIndex].cust,
-                team: db[globalIndex].team,
-                status: newStatus
-            })
-        });
     }
 
-    async function updateRowPay(globalIndex, newPay) {
+    function updateRowPay(globalIndex, newPay) {
         db[globalIndex].pay = newPay;
+        salvarDados();
         calculateMetrics();
         refreshUI();
-        
-        await fetch(GOOGLE_API_URL, {
-            method: "POST",
-            body: JSON.stringify({
-                action: "update",
-                id: db[globalIndex].id,
-                cust: db[globalIndex].cust,
-                team: db[globalIndex].team,
-                pay: newPay
-            })
-        });
     }
 
-    async function updateRowTracking(globalIndex, newTracking) {
+    function updateRowTracking(globalIndex, newTracking) {
         db[globalIndex].tracking = newTracking.trim();
-        
-        await fetch(GOOGLE_API_URL, {
-            method: "POST",
-            body: JSON.stringify({
-                action: "update",
-                id: db[globalIndex].id,
-                cust: db[globalIndex].cust,
-                team: db[globalIndex].team,
-                tracking: newTracking.trim()
-            })
-        });
+        salvarDados();
     }
 
-    async function deleteItem(index) {
+    function deleteItem(index) {
         if(confirm("Desejas eliminar este registo de forma permanente?")) {
-            const idParaApagar = db[index].id;
             db.splice(index, 1);
+            salvarDados();
             calculateMetrics();
             refreshUI();
-            
-            await fetch(GOOGLE_API_URL, {
-                method: "POST",
-                body: JSON.stringify({ action: "delete", id: idParaApagar })
-            });
         }
     }
 
@@ -697,12 +617,12 @@
     }
 
     function refreshUI() {
-        // --- RENDER ORDERS ---
+        // --- ORDERS RENDER ---
         const container = document.getElementById('cardsContainer');
         container.innerHTML = '';
         
         if(db.length === 0) {
-            container.innerHTML = '<div class="loading-text">Nenhum registo sincronizado ou folha vazia.</div>';
+            container.innerHTML = '<div class="loading-text">Nenhum registo armazenado em cache.</div>';
         }
 
         const searchVal = document.getElementById('searchFilter').value.toLowerCase();
@@ -727,31 +647,31 @@
                     </div>
                     <div class="card-details">
                         <div class="detail-line"><span class="detail-label">Modelo:</span><span class="detail-value">${enc.team}</span></div>
-                        \${enc.custom ? `<div class="detail-line"><span class="detail-label">Custom:</span><span class="detail-value customization-text">\${enc.custom}</span></div>` : ''}
-                        <div class="detail-line"><span class="detail-label">Especificações:</span><span class="detail-value">\${enc.size} — \${enc.qty}x — \${parseFloat(enc.price).toFixed(2)}€</span></div>
+                        ${enc.custom ? `<div class="detail-line"><span class="detail-label">Custom:</span><span class="detail-value customization-text">${enc.custom}</span></div>` : ''}
+                        <div class="detail-line"><span class="detail-label">Especificações:</span><span class="detail-value">${enc.size} — ${enc.qty}x — ${parseFloat(enc.price).toFixed(2)}€</span></div>
                         <div class="detail-line" style="margin-top: 4px;">
                             <span class="detail-label">Tracking #:</span>
-                            <input type="text" class="inline-tracking-input" value="\${enc.tracking || ''}" placeholder="Sem Rastreio" onchange="updateRowTracking(\${index}, this.value)">
+                            <input type="text" class="inline-tracking-input" value="${enc.tracking || ''}" placeholder="Sem Rastreio" onchange="updateRowTracking(${index}, this.value)">
                         </div>
                     </div>
                     <div class="card-selectors">
-                        <select class="status-select \${sClass}" onchange="updateRowStatus(\${index}, this.value)">
-                            <option value="Encomendado" \${enc.status === 'Encomendado' ? 'selected' : ''}>Encomendado</option>
-                            <option value="Entregue" \${enc.status === 'Entregue' ? 'selected' : ''}>Entregue</option>
-                            <option value="Por Encomendar" \${enc.status === 'Por Encomendar' ? 'selected' : ''}>Por Encomendar</option>
+                        <select class="status-select ${sClass}" onchange="updateRowStatus(${index}, this.value)">
+                            <option value="Encomendado" ${enc.status === 'Encomendado' ? 'selected' : ''}>Encomendado</option>
+                            <option value="Entregue" ${enc.status === 'Entregue' ? 'selected' : ''}>Entregue</option>
+                            <option value="Por Encomendar" ${enc.status === 'Por Encomendar' ? 'selected' : ''}>Por Encomendar</option>
                         </select>
-                        <select class="pay-select \${pClass}" onchange="updateRowPay(\${index}, this.value)">
-                            <option value="Não pago" \${enc.pay.toLowerCase() === 'não pago' ? 'selected' : ''}>Não pago</option>
-                            <option value="Pago" \${enc.pay.toLowerCase() === 'pago' ? 'selected' : ''}>Pago</option>
+                        <select class="pay-select ${pClass}" onchange="updateRowPay(${index}, this.value)">
+                            <option value="Não pago" ${enc.pay.toLowerCase() === 'não pago' ? 'selected' : ''}>Não pago</option>
+                            <option value="Pago" ${enc.pay.toLowerCase() === 'pago' ? 'selected' : ''}>Pago</option>
                         </select>
-                        <button class="btn-action-delete" onclick="deleteItem(\${index})">Remover Registo</button>
+                        <button class="btn-action-delete" onclick="deleteItem(${index})">Remover Registo</button>
                     </div>
                 `;
                 container.appendChild(card);
             }
         });
 
-        // --- RENDER CLIENTS ---
+        // --- CLIENTS RENDER ---
         const clientContainer = document.getElementById('clientsContainer');
         clientContainer.innerHTML = '';
         const clientSearch = document.getElementById('clientSearchFilter').value.toLowerCase();
@@ -769,15 +689,15 @@
             if(nome.toLowerCase().includes(clientSearch)) {
                 const info = grouped[nome];
                 let financialStatus = info.debt > 0 
-                    ? `<span class="client-financial-clean" style="color:var(--color-danger);">Débito: \${info.debt.toFixed(2)}€</span>`
+                    ? `<span class="client-financial-clean" style="color:var(--color-danger);">Débito: ${info.debt.toFixed(2)}€</span>`
                     : `<span class="client-financial-clean" style="color:var(--color-success);">Regularizado</span>`;
 
                 let historyHTML = '';
                 info.items.forEach(c => {
                     historyHTML += `
                         <div class="history-row">
-                            <strong>\${c.team}</strong> \${c.custom ? `[\${c.custom}]` : ''}<br>
-                            <span style="color:var(--text-muted); font-size:11px;">Tam: \${c.size} | Tracking: \${c.tracking || '---'} | Est: \${c.status}</span>
+                            <strong>${c.team}</strong> ${c.custom ? `[${c.custom}]` : ''}<br>
+                            <span style="color:var(--text-muted); font-size:11px;">Tam: ${c.size} | Tracking: ${c.tracking || '---'} | Est: ${c.status}</span>
                         </div>
                     `;
                 });
@@ -786,22 +706,22 @@
                 cCard.className = 'client-summary-card';
                 cCard.innerHTML = `
                     <div class="card-top">
-                        <span class="client-name">\${nome}</span>
-                        \${financialStatus}
+                        <span class="client-name">${nome}</span>
+                        ${financialStatus}
                     </div>
                     <div class="card-details">
-                        <div class="detail-line"><span class="detail-label">Artigos pedidos:</span><span class="detail-value">\${info.items.length} un.</span></div>
-                        <div class="detail-line"><span class="detail-label">Movimentado total:</span><span class="detail-value">\${info.total.toFixed(2)}€</span></div>
+                        <div class="detail-line"><span class="detail-label">Artigos pedidos:</span><span class="detail-value">${info.items.length} un.</span></div>
+                        <div class="detail-line"><span class="detail-label">Movimentado total:</span><span class="detail-value">${info.total.toFixed(2)}€</span></div>
                     </div>
-                    <button class="btn-view-history" onclick="toggleHistoryBox('h-box-\${cIdx}')">📋 Ver Artigos</button>
-                    <div class="history-panel" id="h-box-\${cIdx}">\${historyHTML}</div>
+                    <button class="btn-view-history" onclick="toggleHistoryBox('h-box-${cIdx}')">📋 Ver Artigos</button>
+                    <div class="history-panel" id="h-box-${cIdx}">${historyHTML}</div>
                 `;
                 clientContainer.appendChild(cCard);
             }
         });
     }
 
-    document.getElementById('orderForm').addEventListener('submit', async function(e) {
+    document.getElementById('orderForm').addEventListener('submit', function(e) {
         e.preventDefault();
         const clienteNome = document.getElementById('form_cliente').value.trim();
         const estado = document.getElementById('form_estado').value;
@@ -828,14 +748,10 @@
         });
 
         db.push(...novasCamisolas);
+        salvarDados();
         calculateMetrics();
         refreshUI();
         switchSection('lista-sec');
-
-        await fetch(GOOGLE_API_URL, {
-            method: "POST",
-            body: JSON.stringify({ action: "insert_multiple", orders: novasCamisolas })
-        });
 
         this.reset();
         document.getElementById('formProductsContainer').innerHTML = `
@@ -855,7 +771,7 @@
         document.getElementById('clientSearchFilter').addEventListener('input', refreshUI);
         document.getElementById('statusFilter').addEventListener('change', refreshUI);
         document.getElementById('payFilter').addEventListener('change', refreshUI);
-        carregarDadosDaNuvem();
+        carregarDados();
     };
 </script>
 </body>
