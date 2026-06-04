@@ -88,6 +88,25 @@
             width: 100%;
         }
 
+        /* Estilo específico para os selects dentro da tabela ficarem mais discretos e limpos */
+        td select {
+            padding: 6px 8px;
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            width: auto;
+            display: inline-block;
+        }
+
+        /* Cores dinâmicas para os selects da tabela baseados no estado */
+        .sel-entregue { background-color: #dcfce7; color: #15803d; }
+        .sel-encomendado { background-color: #e0f2fe; color: #0369a1; }
+        .sel-porencomendar { background-color: #fef9c3; color: #a16207; }
+        .sel-pago { background-color: #dcfce7; color: #15803d; }
+        .sel-naopago { background-color: #fee2e2; color: #b91c1c; }
+
         .btn-add-product {
             background-color: #0284c7;
             color: white;
@@ -182,20 +201,7 @@
             color: var(--wp-text);
         }
 
-        .wp-badge {
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 600;
-            display: inline-block;
-        }
-
-        .wp-badge-tamanho { background: #e2e8f0; color: #1e293b; }
-        .wp-badge-entregue { background: #dcfce7; color: #15803d; }
-        .wp-badge-encomendado { background: #e0f2fe; color: #0369a1; }
-        .wp-badge-porencomendar { background: #fef9c3; color: #a16207; }
-        .wp-badge-pago { background: #dcfce7; color: #15803d; }
-        .wp-badge-naopago { background: #fee2e2; color: #b91c1c; }
+        .wp-badge-tamanho { background: #e2e8f0; color: #1e293b; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 600; }
 
         .wp-btn-delete-row {
             background-color: var(--wp-danger);
@@ -247,18 +253,18 @@
 
             <div class="form-grid">
                 <div style="display:flex; flex-direction:column;">
-                    <label style="font-size:12px; font-weight:bold; color:#475569; margin-bottom:4px;">Estado</label>
+                    <label style="font-size:12px; font-weight:bold; color:#475569; margin-bottom:4px;">Estado Inicial</label>
                     <select id="wp_estado">
-                        <option value="Entregue">Entregue</option>
                         <option value="Encomendado">Encomendado</option>
+                        <option value="Entregue">Entregue</option>
                         <option value="Por Encomendar">Por Encomendar</option>
                     </select>
                 </div>
                 <div style="display:flex; flex-direction:column;">
-                    <label style="font-size:12px; font-weight:bold; color:#475569; margin-bottom:4px;">Pagamento</label>
+                    <label style="font-size:12px; font-weight:bold; color:#475569; margin-bottom:4px;">Pagamento Inicial</label>
                     <select id="wp_pagamento">
-                        <option value="Pago">Pago</option>
                         <option value="Não pago">Não pago</option>
+                        <option value="Pago">Pago</option>
                     </select>
                 </div>
             </div>
@@ -305,8 +311,8 @@
                     <th>Tam.</th>
                     <th>Qtd</th>
                     <th>Preço Un.</th>
-                    <th>Estado</th>
-                    <th>Pagamento</th>
+                    <th>Estado (Altere aqui)</th>
+                    <th>Pagamento (Altere aqui)</th>
                     <th>Ações</th>
                 </tr>
             </thead>
@@ -316,7 +322,6 @@
 </div>
 
 <script>
-    // A tua lista original completa de dados fornecidos
     const initialData = [
         { id: 1, cust: "Paulo", team: "Portugal Pantera Negra", custom: "", size: "L", qty: 1, price: 15, status: "Entregue", pay: "Pago" },
         { id: 1, cust: "Paulo", team: "Alemanha Preta", custom: "", size: "L", qty: 1, price: 15, status: "Entregue", pay: "Pago" },
@@ -347,7 +352,6 @@
         { id: 16, cust: "Vinted", team: "Franca 2a", custom: "Zaïre-Emery", size: "M", qty: 1, price: 18, status: "Por Encomendar", pay: "Não pago" }
     ];
 
-    // Conecta exatamente à tua chave original: 'stadio_db_final'
     let db = JSON.parse(localStorage.getItem('stadio_db_final')) || initialData;
 
     function save() {
@@ -383,6 +387,20 @@
         });
     }
 
+    // NOVA FUNÇÃO: Atualiza o estado diretamente na lista quando o alteras na tabela
+    function updateRowStatus(globalIndex, newStatus) {
+        db[globalIndex].status = newStatus;
+        save();
+        refresh(); // Atualiza as cores instantaneamente
+    }
+
+    // NOVA FUNÇÃO: Atualiza o pagamento diretamente na lista quando o alteras na tabela
+    function updateRowPay(globalIndex, newPay) {
+        db[globalIndex].pay = newPay;
+        save();
+        refresh(); // Atualiza as cores instantaneamente
+    }
+
     function refresh() {
         const tbody = document.getElementById('wp_tableBody');
         if(!tbody) return;
@@ -408,12 +426,11 @@
             const matchesPay = (payVal === "Todos") || (pagamento.toLowerCase() === payVal.toLowerCase());
 
             if (matchesSearch && matchesStatus && matchesPay) {
-                let payClass = 'wp-badge-naopago';
-                if(pagamento.toLowerCase() === 'pago') payClass = 'wp-badge-pago';
-
-                let statusClass = 'wp-badge-encomendado';
-                if(estado === 'Entregue') statusClass = 'wp-badge-entregue';
-                if(estado === 'Por Encomendar') statusClass = 'wp-badge-porencomendar';
+                // Classes de cor dinâmicas para os dropdowns da tabela
+                let payClass = pagamento.toLowerCase() === 'pago' ? 'sel-pago' : 'sel-naopago';
+                let statusClass = 'sel-encomendado';
+                if(estado === 'Entregue') statusClass = 'sel-entregue';
+                if(estado === 'Por Encomendar') statusClass = 'sel-porencomendar';
 
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
@@ -424,16 +441,27 @@
                     <td><span class="wp-badge wp-badge-tamanho">${tamanho}</span></td>
                     <td>${quantidade}</td>
                     <td>${parseFloat(preco).toFixed(2)} €</td>
-                    <td><span class="wp-badge ${statusClass}">${estado}</span></td>
-                    <td><span class="wp-badge ${payClass}">${pagamento}</span></td>
-                    <td><button class="wp-btn-delete-row" onclick="deleteItem(${displayId}, ${index})">Eliminar</button></td>
+                    <td>
+                        <select class="${statusClass}" onchange="updateRowStatus(${index}, this.value)">
+                            <option value="Encomendado" ${estado === 'Encomendado' ? 'selected' : ''}>Encomendado</option>
+                            <option value="Entregue" ${estado === 'Entregue' ? 'selected' : ''}>Entregue</option>
+                            <option value="Por Encomendar" ${estado === 'Por Encomendar' ? 'selected' : ''}>Por Encomendar</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select class="${payClass}" onchange="updateRowPay(${index}, this.value)">
+                            <option value="Não pago" ${pagamento.toLowerCase() === 'não pago' ? 'selected' : ''}>Não pago</option>
+                            <option value="Pago" ${pagamento.toLowerCase() === 'pago' ? 'selected' : ''}>Pago</option>
+                        </select>
+                    </td>
+                    <td><button class="wp-btn-delete-row" onclick="deleteItem(${index})">Eliminar</button></td>
                 `;
                 tbody.appendChild(tr);
             }
         });
     }
 
-    function deleteItem(id, index) {
+    function deleteItem(index) {
         if(confirm("Eliminar este registo?")) {
             db.splice(index, 1);
             save();
@@ -456,7 +484,6 @@
         const pay = document.getElementById('wp_pagamento').value;
         const rows = document.querySelectorAll('.product-row');
 
-        // Cria um ID agrupado para o mesmo cliente, igual ao teu sistema original
         const nextId = db.length > 0 ? Math.max(...db.map(i => i.id || 0)) + 1 : 1;
 
         rows.forEach(row => {
