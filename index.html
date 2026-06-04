@@ -39,6 +39,47 @@
             font-size: 22px;
         }
 
+        /* --- SISTEMA DE ABAS (SECÇÕES) --- */
+        .tabs-menu {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 15px;
+            background: #e2e8f0;
+            padding: 4px;
+            border-radius: 8px;
+            overflow-x: auto; /* Permite deslizar os botões se o ecrã for muito pequeno */
+        }
+
+        .tab-btn {
+            flex: 1;
+            min-width: 85px;
+            background: none;
+            border: none;
+            padding: 10px 2px;
+            font-size: 12px;
+            font-weight: bold;
+            color: #475569;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .tab-btn.active {
+            background: white;
+            color: var(--wp-primary);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
         .wp-panel {
             background: white;
             padding: 15px;
@@ -131,7 +172,6 @@
             gap: 10px;
         }
 
-        /* --- SISTEMA DE CARDS (OTIMIZADO PARA TELEMÓVEL) --- */
         .cards-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -149,7 +189,8 @@
             }
         }
 
-        .order-card {
+        /* --- ESTILOS DOS CARDS --- */
+        .order-card, .client-card {
             background: white;
             border-radius: 8px;
             padding: 14px;
@@ -160,10 +201,43 @@
             gap: 8px;
         }
 
-        /* Cores da borda lateral do card conforme o estado */
         .card-entregue { border-left-color: #16a34a; }
         .card-encomendado { border-left-color: #0284c7; }
         .card-porencomendar { border-left-color: #eab308; }
+
+        /* Estilos do Card do Cliente */
+        .client-card { border-left-color: #6366f1; }
+        .status-pago-ok { color: #16a34a; font-weight: bold; font-size: 13px; }
+        .status-pago-divida { color: #dc2626; font-weight: bold; font-size: 13px; }
+
+        .client-history-box {
+            display: none;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 10px;
+            margin-top: 5px;
+            font-size: 13px;
+        }
+
+        .client-history-item {
+            padding: 6px 0;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+        .client-history-item:last-child { border-bottom: none; }
+
+        .btn-toggle-history {
+            background: #e2e8f0;
+            color: #334155;
+            border: none;
+            padding: 6px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+        }
 
         .card-header {
             display: flex;
@@ -225,7 +299,6 @@
             cursor: pointer;
         }
 
-        /* Cores dos selects dentro dos cards */
         select.sel-entregue { background-color: #dcfce7; color: #15803d; border-color: #bbf7d0; }
         select.sel-encomendado { background-color: #e0f2fe; color: #0369a1; border-color: #bae6fd; }
         select.sel-porencomendar { background-color: #fef9c3; color: #a16207; border-color: #fef08a; }
@@ -246,88 +319,119 @@
         }
 
         .wp-btn-reset {
-            background-color: #64748b;
+            background-color: #dc2626;
             color: white;
-            padding: 5px 10px;
+            padding: 12px;
             border: none;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 12px;
-            float: right;
-            margin-bottom: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            width: 100%;
         }
     </style>
 </head>
 <body>
 
 <div class="wp-gestao-container">
-    <button class="wp-btn-reset" onclick="resetarDadosParaOOriginal()">⚠️ Reset de Fábrica</button>
     <h2>STADIOPT - HUB</h2>
 
-    <div class="wp-panel">
-        <div class="wp-panel-title">Nova Encomenda</div>
-        <form id="orderForm">
-            <div class="wp-form-group">
-                <label for="wp_cliente">Nome do Cliente</label>
-                <input type="text" id="wp_cliente" placeholder="Ex: Paulo" required>
-            </div>
-
-            <div id="productsContainer">
-                <div class="form-grid product-row">
-                    <input type="text" placeholder="Equipa" required class="p_team">
-                    <input type="text" placeholder="Customização" class="p_custom">
-                    <input type="text" placeholder="Tam." class="p_size">
-                    <input type="number" value="1" min="1" class="p_qty">
-                    <input type="number" value="15.00" step="0.01" class="p_price">
-                    <button type="button" class="btn-delete" onclick="removeProductRow(this)" style="display:none;">X</button>
-                </div>
-            </div>
-
-            <button type="button" class="btn-add-product" onclick="addProductRow()">+ Outra Camisola</button>
-
-            <div class="form-grid">
-                <div>
-                    <select id="wp_estado">
-                        <option value="Encomendado">Encomendado</option>
-                        <option value="Entregue">Entregue</option>
-                        <option value="Por Encomendar">Por Encomendar</option>
-                    </select>
-                </div>
-                <div>
-                    <select id="wp_pagamento">
-                        <option value="Não pago">Não pago</option>
-                        <option value="Pago">Pago</option>
-                    </select>
-                </div>
-            </div>
-            <br>
-            <button type="submit" class="wp-btn-submit">Gravar Encomenda</button>
-        </form>
+    <!-- MENU DE SECÇÕES (ABAS) -->
+    <div class="tabs-menu">
+        <button class="tab-btn active" onclick="switchTab('lista-sec')">📦 Encomendas</button>
+        <button class="tab-btn" onclick="switchTab('clientes-sec')">👤 Clientes</button>
+        <button class="tab-btn" onclick="switchTab('novo-sec')">➕ Nova</button>
+        <button class="tab-btn" onclick="switchTab('config-sec')">⚙️ Opções</button>
     </div>
 
-    <div class="wp-panel">
-        <div class="wp-panel-title">Filtros de Pesquisa</div>
-        <div class="wp-filter-bar">
-            <div style="flex: 2; display:flex; flex-direction:column;">
-                <input type="text" id="wp_searchFilter" placeholder="Pesquisar cliente ou equipa...">
+    <!-- SECÇÃO 1: LISTA DE ENCOMENDAS -->
+    <div id="lista-sec" class="tab-content active">
+        <div class="wp-panel">
+            <div class="wp-panel-title">Filtros de Pesquisa</div>
+            <div class="wp-filter-bar">
+                <div style="flex: 2; display:flex; flex-direction:column;">
+                    <input type="text" id="wp_searchFilter" placeholder="Pesquisar cliente ou equipa...">
+                </div>
+                <div style="display:flex; gap:8px; margin-top:5px;">
+                    <select id="wp_statusFilter">
+                        <option value="Todos">Todos Estados</option>
+                        <option value="Entregue">Entregue</option>
+                        <option value="Encomendado">Encomendado</option>
+                        <option value="Por Encomendar">Por Encomendar</option>
+                    </select>
+                    <select id="wp_payFilter">
+                        <option value="Todos">Todos Pagam.</option>
+                        <option value="Pago">Pago</option>
+                        <option value="Não pago">Não pago</option>
+                    </select>
+                </div>
             </div>
-            <div style="display:flex; gap:8px; margin-top:5px;">
-                <select id="wp_statusFilter">
-                    <option value="Todos">Todos Estados</option>
-                    <option value="Entregue">Entregue</option>
-                    <option value="Encomendado">Encomendado</option>
-                    <option value="Por Encomendar">Por Encomendar</option>
-                </select>
-                <select id="wp_payFilter">
-                    <option value="Todos">Todos Pagam.</option>
-                    <option value="Pago">Pago</option>
-                    <option value="Não pago">Não pago</option>
-                </select>
-            </div>
+        </div>
+        <div class="cards-grid" id="wp_cardsContainer"></div>
+    </div>
+
+    <!-- SECÇÃO 2: NOVA VISTA DE CLIENTES -->
+    <div id="clientes-sec" class="tab-content">
+        <div class="wp-panel">
+            <div class="wp-panel-title">Pesquisar Cliente</div>
+            <input type="text" id="wp_clientSearchFilter" placeholder="Escreve o nome do cliente...">
+        </div>
+        <div class="cards-grid" id="wp_clientsContainer"></div>
+    </div>
+
+    <!-- SECÇÃO 3: FORMULÁRIO DE NOVA ENCOMENDA -->
+    <div id="novo-sec" class="tab-content">
+        <div class="wp-panel">
+            <div class="wp-panel-title">Registar Nova Encomenda</div>
+            <form id="orderForm">
+                <div class="wp-form-group">
+                    <label for="wp_cliente">Nome do Cliente</label>
+                    <input type="text" id="wp_cliente" placeholder="Ex: Paulo" required>
+                </div>
+
+                <div id="productsContainer">
+                    <div class="form-grid product-row">
+                        <input type="text" placeholder="Equipa" required class="p_team">
+                        <input type="text" placeholder="Customização" class="p_custom">
+                        <input type="text" placeholder="Tam." class="p_size">
+                        <input type="number" value="1" min="1" class="p_qty">
+                        <input type="number" value="15.00" step="0.01" class="p_price">
+                        <button type="button" class="btn-delete" onclick="removeProductRow(this)" style="display:none;">X</button>
+                    </div>
+                </div>
+
+                <button type="button" class="btn-add-product" onclick="addProductRow()">+ Outra Camisola</button>
+
+                <div class="form-grid">
+                    <div>
+                        <select id="wp_estado">
+                            <option value="Encomendado">Encomendado</option>
+                            <option value="Entregue">Entregue</option>
+                            <option value="Por Encomendar">Por Encomendar</option>
+                        </select>
+                    </div>
+                    <div>
+                        <select id="wp_pagamento">
+                            <option value="Não pago">Não pago</option>
+                            <option value="Pago">Pago</option>
+                        </select>
+                    </div>
+                </div>
+                <br>
+                <button type="submit" class="wp-btn-submit">Gravar Encomenda</button>
+            </form>
         </div>
     </div>
 
-    <div class="cards-grid" id="wp_cardsContainer"></div>
+    <!-- SECÇÃO 4: CONFIGURAÇÕES / REPOR DADOS -->
+    <div id="config-sec" class="tab-content">
+        <div class="wp-panel">
+            <div class="wp-panel-title">Manutenção do Sistema</div>
+            <p style="font-size:14px; color:#64748b; margin-bottom:15px;">Usa esta opção apenas se quiseres apagar os teus registos atuais e voltar a carregar a lista de camisolas inicial de fábrica.</p>
+            <button class="wp-btn-reset" onclick="resetarDadosParaOOriginal()">⚠️ Restaurar Lista de Fábrica</button>
+        </div>
+    </div>
+
 </div>
 
 <script>
@@ -362,6 +466,16 @@
     ];
 
     let db = JSON.parse(localStorage.getItem('stadio_db_final')) || initialData;
+
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+
+        document.getElementById(tabId).classList.add('active');
+        
+        const btnIndex = tabId === 'lista-sec' ? 0 : tabId === 'clientes-sec' ? 1 : tabId === 'novo-sec' ? 2 : 3;
+        document.querySelectorAll('.tab-btn')[btnIndex].classList.add('active');
+    }
 
     function save() {
         localStorage.setItem('stadio_db_final', JSON.stringify(db));
@@ -408,75 +522,135 @@
         refresh();
     }
 
+    function toggleHistory(id) {
+        const box = document.getElementById(id);
+        if(box.style.display === 'block') {
+            box.style.display = 'none';
+        } else {
+            box.style.display = 'block';
+        }
+    }
+
     function refresh() {
-        const container = document.getElementById('wp_cardsContainer');
-        if(!container) return;
-        container.innerHTML = '';
+        // 1. REFRESH DA LISTA DE ENCOMENDAS
+        const orderContainer = document.getElementById('wp_cardsContainer');
+        if(orderContainer) {
+            orderContainer.innerHTML = '';
+            const searchVal = document.getElementById('wp_searchFilter').value.toLowerCase();
+            const statusVal = document.getElementById('wp_statusFilter').value;
+            const payVal = document.getElementById('wp_payFilter').value;
 
-        const searchVal = document.getElementById('wp_searchFilter').value.toLowerCase();
-        const statusVal = document.getElementById('wp_statusFilter').value;
-        const payVal = document.getElementById('wp_payFilter').value;
+            db.forEach((enc, index) => {
+                const cliente = enc.cust || '—';
+                const equipa = enc.team || '—';
+                const customizacao = enc.custom || '';
+                const tamanho = enc.size || '—';
+                const quantidade = enc.qty || 1;
+                const preco = enc.price || 15;
+                const estado = enc.status || 'Encomendado';
+                const pagamento = enc.pay || 'Não pago';
+                const displayId = enc.id || (index + 1);
 
-        db.forEach((enc, index) => {
-            const cliente = enc.cust || '—';
-            const equipa = enc.team || '—';
-            const customizacao = enc.custom || '';
-            const tamanho = enc.size || '—';
-            const quantidade = enc.qty || 1;
-            const preco = enc.price || 15;
-            const estado = enc.status || 'Encomendado';
-            const pagamento = enc.pay || 'Não pago';
-            const displayId = enc.id || (index + 1);
+                if ((cliente.toLowerCase().includes(searchVal) || equipa.toLowerCase().includes(searchVal)) &&
+                    (statusVal === "Todos" || estado === statusVal) &&
+                    (payVal === "Todos" || pagamento.toLowerCase() === payVal.toLowerCase())) {
 
-            const matchesSearch = cliente.toLowerCase().includes(searchVal) || equipa.toLowerCase().includes(searchVal);
-            const matchesStatus = (statusVal === "Todos") || (estado === statusVal);
-            const matchesPay = (payVal === "Todos") || (pagamento.toLowerCase() === payVal.toLowerCase());
+                    let borderClass = estado === 'Entregue' ? 'card-entregue' : estado === 'Por Encomendar' ? 'card-porencomendar' : 'card-encomendado';
+                    let statusClass = estado === 'Entregue' ? 'sel-entregue' : estado === 'Por Encomendar' ? 'sel-porencomendar' : 'sel-encomendado';
+                    let payClass = pagamento.toLowerCase() === 'pago' ? 'sel-pago' : 'sel-naopago';
 
-            if (matchesSearch && matchesStatus && matchesPay) {
-                // Classes de cor dinâmicas para o cartão e os seletores
-                let borderClass = 'card-encomendado';
-                let statusClass = 'sel-encomendado';
-                if(estado === 'Entregue') { borderClass = 'card-entregue'; statusClass = 'sel-entregue'; }
-                if(estado === 'Por Encomendar') { borderClass = 'card-porencomendar'; statusClass = 'sel-porencomendar'; }
+                    const card = document.createElement('div');
+                    card.className = `order-card ${borderClass}`;
+                    card.innerHTML = `
+                        <div class="card-header">
+                            <span class="card-client">${cliente}</span>
+                            <span class="card-id">ID: ${displayId}</span>
+                        </div>
+                        <div class="card-body-row"><span class="card-label">Equipa:</span><span class="card-value">${equipa}</span></div>
+                        ${customizacao ? `<div class="card-body-row"><span class="card-label">Personalização:</span><span class="card-value card-custom">${customizacao}</span></div>` : ''}
+                        <div class="card-body-row"><span class="card-label">Tam / Qtd / Preço:</span><span class="card-value">${tamanho} | ${quantidade}x | ${parseFloat(preco).toFixed(2)}€</span></div>
+                        <div class="card-actions">
+                            <select class="${statusClass}" onchange="updateRowStatus(${index}, this.value)">
+                                <option value="Encomendado" ${estado === 'Encomendado' ? 'selected' : ''}>Encomendado</option>
+                                <option value="Entregue" ${estado === 'Entregue' ? 'selected' : ''}>Entregue</option>
+                                <option value="Por Encomendar" ${estado === 'Por Encomendar' ? 'selected' : ''}>Por Encomendar</option>
+                            </select>
+                            <select class="${payClass}" onchange="updateRowPay(${index}, this.value)">
+                                <option value="Não pago" ${pagamento.toLowerCase() === 'não pago' ? 'selected' : ''}>Não pago</option>
+                                <option value="Pago" ${pagamento.toLowerCase() === 'pago' ? 'selected' : ''}>Pago</option>
+                            </select>
+                            <button class="btn-card-delete" onclick="deleteItem(${index})">Eliminar Registo</button>
+                        </div>
+                    `;
+                    orderContainer.appendChild(card);
+                }
+            });
+        }
 
-                let payClass = pagamento.toLowerCase() === 'pago' ? 'sel-pago' : 'sel-naopago';
+        // 2. REFRESH DA LISTA DE CLIENTES (AGRUPADO)
+        const clientContainer = document.getElementById('wp_clientsContainer');
+        if(clientContainer) {
+            clientContainer.innerHTML = '';
+            const clientSearch = document.getElementById('wp_clientSearchFilter').value.toLowerCase();
 
-                const card = document.createElement('div');
-                card.className = `order-card ${borderClass}`;
-                card.innerHTML = `
-                    <div class="card-header">
-                        <span class="card-client">${cliente}</span>
-                        <span class="card-id">ID: ${displayId}</span>
-                    </div>
-                    <div class="card-body-row">
-                        <span class="card-label">Equipa:</span>
-                        <span class="card-value">${equipa}</span>
-                    </div>
-                    ${customizacao ? `
-                    <div class="card-body-row">
-                        <span class="card-label">Personalização:</span>
-                        <span class="card-value card-custom">${customizacao}</span>
-                    </div>` : ''}
-                    <div class="card-body-row">
-                        <span class="card-label">Tam / Qtd / Preço:</span>
-                        <span class="card-value">${tamanho} | ${quantidade}x | ${parseFloat(preco).toFixed(2)}€</span>
-                    </div>
-                    <div class="card-actions">
-                        <select class="${statusClass}" onchange="updateRowStatus(${index}, this.value)">
-                            <option value="Encomendado" ${estado === 'Encomendado' ? 'selected' : ''}>Encomendado</option>
-                            <option value="Entregue" ${estado === 'Entregue' ? 'selected' : ''}>Entregue</option>
-                            <option value="Por Encomendar" ${estado === 'Por Encomendar' ? 'selected' : ''}>Por Encomendar</option>
-                        </select>
-                        <select class="${payClass}" onchange="updateRowPay(${index}, this.value)">
-                            <option value="Não pago" ${pagamento.toLowerCase() === 'não pago' ? 'selected' : ''}>Não pago</option>
-                            <option value="Pago" ${pagamento.toLowerCase() === 'pago' ? 'selected' : ''}>Pago</option>
-                        </select>
-                        <button class="btn-card-delete" onclick="deleteItem(${index})">Eliminar Registo</button>
-                    </div>
-                `;
-                container.appendChild(card);
-            }
-        });
+            // Agrupar dados por cliente
+            const clientesAgrupados = {};
+            db.forEach((enc) => {
+                const nome = enc.cust || 'Desconhecido';
+                if(!clientesAgrupados[nome]) {
+                    clientesAgrupados[nome] = { camisolas: [], totalDivida: 0, totalGeral: 0 };
+                }
+                clientesAgrupados[nome].camisolas.push(enc);
+                let valor = parseFloat(enc.price || 15) * (parseInt(enc.qty) || 1);
+                clientesAgrupados[nome].totalGeral += valor;
+                if(enc.pay.toLowerCase() !== 'pago') {
+                    clientesAgrupados[nome].totalDivida += valor;
+                }
+            });
+
+            // Gerar os cards dos clientes
+            Object.keys(clientesAgrupados).forEach((nome, cIdx) => {
+                if(nome.toLowerCase().includes(clientSearch)) {
+                    const info = clientesAgrupados[nome];
+                    const numCamisolas = info.camisolas.length;
+                    
+                    let statusFinanceiroHTML = info.totalDivida > 0 
+                        ? `<span class="status-pago-divida">⚠️ Falta pagar: ${info.totalDivida.toFixed(2)}€</span>`
+                        : `<span class="status-pago-ok">✅ Tudo pago 🎉</span>`;
+
+                    let historicoHTML = '';
+                    info.camisolas.forEach(c => {
+                        let customText = c.custom ? ` (${c.custom})` : '';
+                        historicoHTML += `
+                            <div class="client-history-item">
+                                ⚽ <strong>${c.team}</strong>${customText}<br>
+                                <span style="color:#64748b;">Tam: ${c.size} | Estado: <strong>${c.status}</strong> | Preço: ${parseFloat(c.price).toFixed(2)}€</span>
+                            </div>
+                        `;
+                    });
+
+                    const cCard = document.createElement('div');
+                    cCard.className = 'client-card';
+                    cCard.innerHTML = `
+                        <div class="card-header">
+                            <span class="card-client">${nome}</span>
+                            <span>${statusFinanceiroHTML}</span>
+                        </div>
+                        <div class="card-body-row">
+                            <span class="card-label">Total de Encomendas:</span>
+                            <span class="card-value">${numCamisolas} camisola(s)</span>
+                        </div>
+                        <div class="card-body-row">
+                            <span class="card-label">Total Movimentado:</span>
+                            <span class="card-value">${info.totalGeral.toFixed(2)}€</span>
+                        </div>
+                        <button class="btn-toggle-history" onclick="toggleHistory('hist-${cIdx}')">📋 Ver Camisolas</button>
+                        <div class="client-history-box" id="hist-${cIdx}">${historicoHTML}</div>
+                    `;
+                    clientContainer.appendChild(cCard);
+                }
+            });
+        }
     }
 
     function deleteItem(index) {
@@ -492,6 +666,7 @@
             db = [...initialData];
             save();
             refresh();
+            switchTab('lista-sec');
         }
     }
 
@@ -531,10 +706,12 @@
         `;
         save();
         refresh();
+        switchTab('lista-sec');
     });
 
     window.onload = function() {
         document.getElementById('wp_searchFilter').addEventListener('input', refresh);
+        document.getElementById('wp_clientSearchFilter').addEventListener('input', refresh);
         document.getElementById('wp_statusFilter').addEventListener('change', refresh);
         document.getElementById('wp_payFilter').addEventListener('change', refresh);
         refresh();
