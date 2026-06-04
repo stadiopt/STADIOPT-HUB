@@ -64,7 +64,7 @@
             text-align: center;
         }
 
-        /* --- KPI METRICS --- */
+        /* --- KPI MENU GRID (Transformado em Menu) --- */
         .metrics-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -87,6 +87,20 @@
             flex-direction: column;
             gap: 4px;
             box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .kpi-card:hover {
+            border-color: var(--text-muted);
+            transform: translateY(-1px);
+        }
+
+        .kpi-card.active {
+            border-color: var(--brand-primary);
+            background: var(--bg-input);
+            box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.04);
         }
 
         .kpi-title {
@@ -103,39 +117,7 @@
             color: var(--text-main);
         }
 
-        /* --- NAVIGATION TABS --- */
-        .navigation-bar {
-            display: flex;
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            padding: 4px;
-            border-radius: 8px;
-            margin-bottom: 24px;
-            gap: 4px;
-        }
-
-        .nav-tab {
-            flex: 1;
-            background: none;
-            border: none;
-            padding: 12px 4px;
-            font-size: 13px;
-            font-weight: 700;
-            color: var(--text-muted);
-            cursor: pointer;
-            border-radius: 6px;
-            transition: all 0.2s ease;
-            text-align: center;
-            white-space: nowrap;
-            letter-spacing: 0.5px;
-        }
-
-        .nav-tab.active {
-            background: var(--bg-main);
-            color: var(--brand-primary);
-            border: 1px solid var(--border-color);
-        }
-
+        /* --- SECTIONS CONTROL --- */
         .tab-content {
             display: none;
         }
@@ -378,13 +360,19 @@
             width: 100%;
             text-transform: uppercase;
         }
+        .loading-text {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 14px;
+            padding: 40px;
+            grid-column: span 3;
+        }
     </style>
 </head>
 <body>
 
 <div class="dashboard-container">
     
-    <!-- BRAND HEADER -->
     <div class="dash-header">
         <svg class="logo-svg" viewBox="0 0 100 100">
             <path d="M50 15 L82 85 L64 85 L50 51 L36 85 L18 85 Z" />
@@ -392,34 +380,25 @@
         <h1>STΛDIO</h1>
     </div>
 
-    <!-- METRICS -->
     <div class="metrics-grid">
-        <div class="kpi-card">
-            <span class="kpi-title">Total Vendas</span>
-            <span class="kpi-value" id="kpi_total_sales">0.00€</span>
+        <div class="kpi-card" id="menu-novo" onclick="switchSection('novo-sec', 'menu-novo')">
+            <span class="kpi-title">✨ Menu Vendas</span>
+            <span class="kpi-value" style="font-size: 18px; color: var(--brand-accent);">+ Nova Venda</span>
         </div>
-        <div class="kpi-card">
+        <div class="kpi-card active" id="menu-lista" onclick="switchSection('lista-sec', 'menu-lista'); resetStatusFilter();">
+            <span class="kpi-title">Artigos Totais</span>
+            <span class="kpi-value" id="kpi_total_orders">0</span>
+        </div>
+        <div class="kpi-card" id="menu-receber" onclick="switchSection('lista-sec', 'menu-receber'); filterByNotPaid();">
             <span class="kpi-title">Por Receber</span>
             <span class="kpi-value" style="color: var(--color-warning);" id="kpi_pending_cash">0.00€</span>
         </div>
-        <div class="kpi-card">
-            <span class="kpi-title">Artigos</span>
-            <span class="kpi-value" id="kpi_total_orders">0</span>
-        </div>
-        <div class="kpi-card">
-            <span class="kpi-title">Entregues</span>
-            <span class="kpi-value" style="color: var(--color-success);" id="kpi_delivered">0</span>
+        <div class="kpi-card" id="menu-clientes" onclick="switchSection('clientes-sec', 'menu-clientes')">
+            <span class="kpi-title">Clientes Ativos</span>
+            <span class="kpi-value" style="color: var(--color-success);" id="kpi_active_clients">0</span>
         </div>
     </div>
 
-    <!-- NAVIGATION BAR -->
-    <div class="navigation-bar">
-        <button class="nav-tab active" onclick="switchSection('lista-sec')">📦 Encomendas</button>
-        <button class="nav-tab" onclick="switchSection('clientes-sec')">👤 Clientes</button>
-        <button class="nav-tab" onclick="switchSection('novo-sec')">➕ Nova Venda</button>
-    </div>
-
-    <!-- SECTION 1: ORDERS -->
     <div id="lista-sec" class="tab-content active">
         <div class="clean-panel">
             <div class="filter-row">
@@ -444,7 +423,6 @@
         <div class="cards-layout" id="cardsContainer"></div>
     </div>
 
-    <!-- SECTION 2: CLIENTS -->
     <div id="clientes-sec" class="tab-content">
         <div class="clean-panel">
             <input type="text" id="clientSearchFilter" placeholder="Filtrar por nome do cliente...">
@@ -452,7 +430,6 @@
         <div class="cards-layout" id="clientsContainer"></div>
     </div>
 
-    <!-- SECTION 3: NEW ORDER -->
     <div id="novo-sec" class="tab-content">
         <div class="clean-panel">
             <form id="orderForm">
@@ -499,7 +476,7 @@
 </div>
 
 <script>
-    // Os teus dados reais e históricos
+    // Base de dados com o histórico real fornecido
     const initialData = [
         { id: 1, cust: "Paulo", team: "Portugal Pantera Negra", custom: "", size: "L", qty: 1, price: 15, status: "Entregue", pay: "Pago", tracking: "" },
         { id: 1, cust: "Paulo", team: "Alemanha Preta", custom: "", size: "L", qty: 1, price: 15, status: "Entregue", pay: "Pago", tracking: "" },
@@ -548,31 +525,44 @@
         localStorage.setItem('stadio_db_final', JSON.stringify(db));
     }
 
-    function switchSection(tabId) {
+    function switchSection(tabId, cardId) {
+        // Alternar visibilidade das secções
         document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-        document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
         document.getElementById(tabId).classList.add('active');
         
-        const btnIndex = tabId === 'lista-sec' ? 0 : tabId === 'clientes-sec' ? 1 : 2;
-        document.querySelectorAll('.nav-tab')[btnIndex].classList.add('active');
+        // Alternar classe ativa nos cartões do menu
+        document.querySelectorAll('.kpi-card').forEach(el => el.classList.remove('active'));
+        if(cardId) {
+            document.getElementById(cardId).classList.add('active');
+        }
+    }
+
+    // Filtros Rápidos acionados pelos cartões de estatísticas
+    function filterByNotPaid() {
+        document.getElementById('payFilter').value = 'Não pago';
+        document.getElementById('statusFilter').value = 'Todos';
+        refreshUI();
+    }
+
+    function resetStatusFilter() {
+        document.getElementById('payFilter').value = 'Todos';
+        document.getElementById('statusFilter').value = 'Todos';
+        refreshUI();
     }
 
     function calculateMetrics() {
-        let totalSales = 0;
         let pendingCash = 0;
-        let deliveredCount = 0;
+        let uniqueClients = new Set();
 
         db.forEach(item => {
             let itemCost = parseFloat(item.price || 15) * (parseInt(item.qty) || 1);
-            totalSales += itemCost;
             if(item.pay.toLowerCase() !== 'pago') pendingCash += itemCost;
-            if(item.status.toLowerCase() === 'entregue') deliveredCount++;
+            if(item.cust) uniqueClients.add(item.cust.trim().toLowerCase());
         });
 
-        document.getElementById('kpi_total_sales').innerText = totalSales.toFixed(2) + '€';
         document.getElementById('kpi_pending_cash').innerText = pendingCash.toFixed(2) + '€';
         document.getElementById('kpi_total_orders').innerText = db.length;
-        document.getElementById('kpi_delivered').innerText = deliveredCount;
+        document.getElementById('kpi_active_clients').innerText = uniqueClients.size;
     }
 
     function updateRowStatus(globalIndex, newStatus) {
@@ -750,7 +740,8 @@
         const trackingCode = document.getElementById('form_tracking').value.trim();
         const rows = document.querySelectorAll('.product-input-row');
 
-        const uniqueId = Date.now();
+        // Gerar um número ID curto sequencial incremental simples baseado no histórico existente
+        const uniqueId = db.length > 0 ? Math.max(...db.map(o => o.id || 0)) + 1 : 1;
         const novasCamisolas = [];
 
         rows.forEach(row => {
@@ -771,8 +762,8 @@
         db.push(...novasCamisolas);
         salvarDados();
         calculateMetrics();
-        refreshUI();
-        switchSection('lista-sec');
+        resetStatusFilter();
+        switchSection('lista-sec', 'menu-lista');
 
         this.reset();
         document.getElementById('formProductsContainer').innerHTML = `
