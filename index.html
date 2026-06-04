@@ -499,24 +499,45 @@
 </div>
 
 <script>
-    // Base de dados padrão que será carregada caso o LocalStorage esteja vazio
-    const defaultData = [
-        { id: 1710000000001, cust: "Gonçalo", team: "Al Nassr Home v2", custom: "GONÇALO 7", size: "M", qty: 1, price: 15.00, status: "Entregue", pay: "Pago", tracking: "" },
-        { id: 1710000000002, cust: "Gonçalo", team: "Portugal Home 2024", custom: "CRISTIANO 7", size: "L", qty: 1, price: 15.00, status: "Encomendado", pay: "Pago", tracking: "LS123456789CH" },
-        { id: 1710000000003, cust: "Mariana Silva", team: "Real Madrid Away", custom: "MBAPPÉ 9", size: "S", qty: 1, price: 15.00, status: "Por Encomendar", pay: "Não pago", tracking: "" },
-        { id: 1710000000004, cust: "Mariana Silva", team: "Arsenal Home", custom: "", size: "M", qty: 1, price: 15.00, status: "Entregue", pay: "Pago", tracking: "" },
-        { id: 1710000000005, cust: "Carlos Santos", team: "Sporting CP Home", custom: "GYÖKERES 9", size: "XL", qty: 2, price: 15.00, status: "Encomendado", pay: "Não pago", tracking: "SPO987654" }
+    // Os teus dados reais e históricos
+    const initialData = [
+        { id: 1, cust: "Paulo", team: "Portugal Pantera Negra", custom: "", size: "L", qty: 1, price: 15, status: "Entregue", pay: "Pago", tracking: "" },
+        { id: 1, cust: "Paulo", team: "Alemanha Preta", custom: "", size: "L", qty: 1, price: 15, status: "Entregue", pay: "Pago", tracking: "" },
+        { id: 2, cust: "Barbara", team: "Marrocos", custom: "", size: "L", qty: 1, price: 15, status: "Entregue", pay: "Pago", tracking: "" },
+        { id: 3, cust: "Rafael", team: "Portugal Pantera Negra", custom: "Ronaldo 7", size: "M", qty: 1, price: 15, status: "Entregue", pay: "Pago", tracking: "" },
+        { id: 3, cust: "Rafael", team: "Sporting", custom: "Trincao 17", size: "M", qty: 1, price: 15, status: "Entregue", pay: "Pago", tracking: "" },
+        { id: 4, cust: "Vinted", team: "Portugal Pantera Negra", custom: "", size: "L", qty: 1, price: 15, status: "Entregue", pay: "Pago", tracking: "" },
+        { id: 5, cust: "FB", team: "Porto", custom: "", size: "XL", qty: 1, price: 15, status: "Entregue", pay: "Pago", tracking: "" },
+        { id: 6, cust: "Vedat", team: "Portugal Pantera Negra", custom: "Narin 23", size: "M", qty: 1, price: 18, status: "Entregue", pay: "Pago", tracking: "" },
+        { id: 6, cust: "Vedat", team: "Turquia", custom: "Vedat 10", size: "XL", qty: 1, price: 18, status: "Entregue", pay: "Pago", tracking: "" },
+        { id: 7, cust: "OLX01", team: "Portugal Pantera Negra", custom: "RockNRoller 89", size: "M", qty: 1, price: 15, status: "Entregue", pay: "Pago", tracking: "" },
+        { id: 7, cust: "OLX01", team: "Portugal", custom: "", size: "S", qty: 1, price: 15, status: "Entregue", pay: "Pago", tracking: "" },
+        { id: 8, cust: "Gerson", team: "Portugal Pantera Negra", custom: "", size: "L", qty: 1, price: 15, status: "Entregue", pay: "Pago", tracking: "" },
+        { id: 9, cust: "Paulo", team: "Portugal Pantera Negra", custom: "", size: "XL", qty: 1, price: 15, status: "Entregue", pay: "Pago", tracking: "" },
+        { id: 9, cust: "Paulo", team: "Portugal Pantera Negra", custom: "", size: "XL", qty: 1, price: 15, status: "Entregue", pay: "Pago", tracking: "" },
+        { id: 10, cust: "Tamara", team: "Argentina", custom: "", size: "S (W)", qty: 1, price: 15, status: "Encomendado", pay: "Pago", tracking: "" },
+        { id: 11, cust: "Gerson", team: "Atletico Bilbao Verde", custom: "", size: "L", qty: 1, price: 15, status: "Encomendado", pay: "Não pago", tracking: "" },
+        { id: 12, cust: "OLX02", team: "Japao Pokemon", custom: "", size: "M", qty: 1, price: 15, status: "Encomendado", pay: "Não pago", tracking: "" },
+        { id: 12, cust: "OLX02", team: "Japao Pokemon", custom: "", size: "S", qty: 1, price: 15, status: "Encomendado", pay: "Não pago", tracking: "" },
+        { id: 12, cust: "OLX02", team: "Japao Supra", custom: "", size: "M", qty: 1, price: 15, status: "Encomendado", pay: "Não pago", tracking: "" },
+        { id: 12, cust: "OLX02", team: "Japao Slyline", custom: "", size: "M", qty: 1, price: 15, status: "Encomendado", pay: "Não pago", tracking: "" },
+        { id: 13, cust: "Walter", team: "Brasil", custom: "Zezinho 89", size: "XL", qty: 1, price: 15, status: "Encomendado", pay: "Não pago", tracking: "" },
+        { id: 13, cust: "Walter", team: "Brasil", custom: "Gabi G 9", size: "M (W)", qty: 1, price: 15, status: "Encomendado", pay: "Não pago", tracking: "" },
+        { id: 14, cust: "Home", team: "Portugal 2a", custom: "", size: "XL", qty: 1, price: 15, status: "Encomendado", pay: "Pago", tracking: "" },
+        { id: 14, cust: "Home", team: "Portugal Treino Azul", custom: "", size: "S", qty: 1, price: 15, status: "Encomendado", pay: "Pago", tracking: "" },
+        { id: 14, cust: "Home", team: "Portugal", custom: "", size: "M (W)", qty: 1, price: 15, status: "Encomendado", pay: "Pago", tracking: "" },
+        { id: 15, cust: "Barbara", team: "Marrocos 2a", custom: "", size: "L", qty: 1, price: 18, status: "Por Encomendar", pay: "Não pago", tracking: "" },
+        { id: 16, cust: "Vinted", team: "Franca 2a", custom: "Zaïre-Emery", size: "M", qty: 1, price: 18, status: "Por Encomendar", pay: "Não pago", tracking: "" }
     ];
 
     let db = [];
 
-    // Inicializa carregando do LocalStorage ou do histórico base padrão
     function carregarDados() {
-        const localData = localStorage.getItem('stadio_db');
+        const localData = localStorage.getItem('stadio_db_final');
         if (localData) {
             db = JSON.parse(localData);
         } else {
-            db = defaultData;
+            db = initialData;
             salvarDados();
         }
         calculateMetrics();
@@ -524,7 +545,7 @@
     }
 
     function salvarDados() {
-        localStorage.setItem('stadio_db', JSON.stringify(db));
+        localStorage.setItem('stadio_db_final', JSON.stringify(db));
     }
 
     function switchSection(tabId) {
@@ -632,10 +653,10 @@
         db.forEach((enc, index) => {
             const trackingStr = enc.tracking ? enc.tracking.toLowerCase() : '';
             if ((enc.cust.toLowerCase().includes(searchVal) || enc.team.toLowerCase().includes(searchVal) || trackingStr.includes(searchVal)) &&
-                (statusVal === "Todos" || enc.status === statusVal) &&
+                (statusVal === "Todos" || enc.status.toLowerCase() === statusVal.toLowerCase()) &&
                 (payVal === "Todos" || enc.pay.toLowerCase() === payVal.toLowerCase())) {
 
-                let sClass = enc.status === 'Entregue' ? 's-entregue' : enc.status === 'Por Encomendar' ? 's-porencomendar' : 's-encomendado';
+                let sClass = enc.status.toLowerCase() === 'entregue' ? 's-entregue' : enc.status.toLowerCase() === 'por encomendar' ? 's-porencomendar' : 's-encomendado';
                 let pClass = enc.pay.toLowerCase() === 'pago' ? 'p-pago' : 'p-naopago';
 
                 const card = document.createElement('div');
@@ -643,7 +664,7 @@
                 card.innerHTML = `
                     <div class="card-top">
                         <span class="client-name">${enc.cust}</span>
-                        <span class="badge-id">#${enc.id.toString().slice(-4)}</span>
+                        <span class="badge-id">#${enc.id ? enc.id.toString().slice(-4) : '0000'}</span>
                     </div>
                     <div class="card-details">
                         <div class="detail-line"><span class="detail-label">Modelo:</span><span class="detail-value">${enc.team}</span></div>
@@ -656,9 +677,9 @@
                     </div>
                     <div class="card-selectors">
                         <select class="status-select ${sClass}" onchange="updateRowStatus(${index}, this.value)">
-                            <option value="Encomendado" ${enc.status === 'Encomendado' ? 'selected' : ''}>Encomendado</option>
-                            <option value="Entregue" ${enc.status === 'Entregue' ? 'selected' : ''}>Entregue</option>
-                            <option value="Por Encomendar" ${enc.status === 'Por Encomendar' ? 'selected' : ''}>Por Encomendar</option>
+                            <option value="Encomendado" ${enc.status.toLowerCase() === 'encomendado' ? 'selected' : ''}>Encomendado</option>
+                            <option value="Entregue" ${enc.status.toLowerCase() === 'entregue' ? 'selected' : ''}>Entregue</option>
+                            <option value="Por Encomendar" ${enc.status.toLowerCase() === 'por encomendar' ? 'selected' : ''}>Por Encomendar</option>
                         </select>
                         <select class="pay-select ${pClass}" onchange="updateRowPay(${index}, this.value)">
                             <option value="Não pago" ${enc.pay.toLowerCase() === 'não pago' ? 'selected' : ''}>Não pago</option>
