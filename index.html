@@ -3,29 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard STADIOPT</title>
+    <title>STΛDIO // Dashboard</title>
     <style>
         :root {
-            --brand-primary: #3b82f6;
-            --brand-primary-hover: #2563eb;
-            --bg-main: #f8fafc;
-            --bg-card: #ffffff;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --border-color: #e2e8f0;
+            /* Paleta STΛDIO - Dark Tech Desportivo */
+            --bg-main: #0a0c10;
+            --bg-card: #121620;
+            --bg-input: #1a202c;
+            --border-color: #232d3f;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --brand-primary: #ffffff;
+            --brand-accent: #38bdf8; /* Azul cyan desportivo para realces */
             
             --color-success: #10b981;
-            --color-success-bg: #ecfdf5;
+            --color-success-bg: rgba(16, 185, 129, 0.1);
             --color-warning: #f59e0b;
-            --color-warning-bg: #fffbeb;
+            --color-warning-bg: rgba(245, 158, 11, 0.1);
             --color-danger: #ef4444;
-            --color-danger-bg: #fef2f2;
-            --color-info: #06b6d4;
-            --color-info-bg: #ecfeff;
+            --color-danger-bg: rgba(239, 68, 68, 0.1);
         }
 
         body {
-            background-color: #f1f5f9;
+            background-color: var(--bg-main);
+            /* Padrão de grelha subtil inspirado no background do logo */
+            background-image: 
+                linear-gradient(var(--border-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--border-color) 1px, transparent 1px);
+            background-size: 40px 40px;
             margin: 0;
             padding: 16px;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -38,28 +43,33 @@
             margin: 0 auto;
         }
 
-        /* --- HEADER --- */
+        /* --- HEADER STΛDIO --- */
         .dash-header {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
-            margin-bottom: 24px;
-            padding: 4px 0;
+            justify-content: center;
+            margin-bottom: 30px;
+            padding: 20px 0 10px 0;
+            gap: 12px;
+        }
+
+        .logo-svg {
+            width: 46px;
+            height: 46px;
+            fill: var(--brand-primary);
         }
 
         .dash-header h1 {
-            font-size: 22px;
-            font-weight: 800;
+            font-size: 26px;
+            font-weight: 900;
             margin: 0;
-            letter-spacing: -0.5px;
-            color: var(--text-main);
-        }
-
-        .dash-header h1 span {
+            letter-spacing: 4px;
             color: var(--brand-primary);
+            text-align: center;
         }
 
-        /* --- DASHBOARD METRICS (KPIs) --- */
+        /* --- KPI METRICS --- */
         .metrics-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -76,56 +86,59 @@
         .kpi-card {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
-            border-radius: 12px;
+            border-radius: 8px;
             padding: 16px;
             display: flex;
             flex-direction: column;
             gap: 4px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
         }
 
         .kpi-title {
-            font-size: 12px;
-            font-weight: 600;
+            font-size: 11px;
+            font-weight: 700;
             color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
         }
 
         .kpi-value {
-            font-size: 20px;
-            font-weight: 700;
+            font-size: 22px;
+            font-weight: 800;
             color: var(--text-main);
         }
 
         /* --- NAVIGATION TABS --- */
         .navigation-bar {
             display: flex;
-            background: #e2e8f0;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
             padding: 4px;
             border-radius: 8px;
-            margin-bottom: 20px;
-            gap: 2px;
+            margin-bottom: 24px;
+            gap: 4px;
         }
 
         .nav-tab {
             flex: 1;
             background: none;
             border: none;
-            padding: 10px 4px;
+            padding: 12px 4px;
             font-size: 13px;
-            font-weight: 600;
+            font-weight: 700;
             color: var(--text-muted);
             cursor: pointer;
             border-radius: 6px;
-            transition: all 0.15s ease;
+            transition: all 0.2s ease;
             text-align: center;
             white-space: nowrap;
+            letter-spacing: 0.5px;
         }
 
         .nav-tab.active {
-            background: var(--bg-card);
+            background: var(--bg-input);
             color: var(--brand-primary);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
         }
 
         .tab-content {
@@ -136,25 +149,24 @@
             display: block;
         }
 
-        /* --- FILTERS & PANELS --- */
+        /* --- PANELS & FORMS --- */
         .clean-panel {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 16px;
+            border-radius: 8px;
+            padding: 20px;
             margin-bottom: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
         }
 
         .filter-row {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
         }
 
         @media (min-width: 768px) {
-            .filter-row {
-                flex-direction: row;
-            }
+            .filter-row { flex-direction: row; }
             .filter-search { flex: 2; }
             .filter-selects { flex: 1; display: flex; gap: 8px; }
         }
@@ -165,23 +177,39 @@
         }
 
         input, select {
-            background: var(--bg-main);
+            background: var(--bg-input);
             border: 1px solid var(--border-color);
-            padding: 10px 14px;
-            border-radius: 8px;
+            padding: 12px 14px;
+            border-radius: 6px;
             font-size: 14px;
             color: var(--text-main);
             box-sizing: border-box;
             width: 100%;
             outline: none;
-            transition: border-color 0.2s;
+            transition: all 0.2s;
         }
 
         input:focus, select:focus {
-            border-color: var(--brand-primary);
+            border-color: var(--text-muted);
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.05);
         }
 
-        /* --- CARDS GRID --- */
+        input.inline-tracking-input {
+            background: var(--bg-main);
+            border: 1px solid var(--border-color);
+            padding: 6px 10px;
+            font-size: 12px;
+            border-radius: 4px;
+            color: var(--text-main);
+            text-align: center;
+            font-family: monospace;
+        }
+
+        input.inline-tracking-input:focus {
+            border-color: var(--brand-accent);
+        }
+
+        /* --- CARDS GRID LAYOUT --- */
         .cards-layout {
             display: grid;
             grid-template-columns: 1fr;
@@ -194,49 +222,54 @@
             }
         }
 
-        /* --- CLEAN CARDS DESIGN --- */
+        /* --- CARDS DESIGN --- */
         .order-item-card, .client-summary-card {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 16px;
+            border-radius: 8px;
+            padding: 18px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            position: relative;
+            gap: 14px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15);
         }
 
         .card-top {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: center;
         }
 
         .client-name {
             font-size: 16px;
             font-weight: 700;
-            color: var(--text-main);
+            letter-spacing: 0.3px;
         }
 
         .badge-id {
             font-size: 11px;
-            font-weight: 600;
-            background: var(--bg-main);
+            font-weight: 700;
+            background: var(--bg-input);
             color: var(--text-muted);
-            padding: 2px 6px;
+            padding: 3px 8px;
             border-radius: 4px;
+            border: 1px solid var(--border-color);
         }
 
         .card-details {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 8px;
             font-size: 14px;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 0;
         }
 
         .detail-line {
             display: flex;
             justify-content: space-between;
+            align-items: center;
         }
 
         .detail-label {
@@ -244,30 +277,32 @@
         }
 
         .detail-value {
-            font-weight: 500;
+            font-weight: 600;
         }
 
         .customization-text {
-            color: var(--brand-primary);
-            font-weight: 600;
+            color: var(--brand-accent);
         }
 
         .card-selectors {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 8px;
-            margin-top: 4px;
         }
 
-        /* Estilização limpa dos selects internos */
-        select.status-select { font-weight: 600; font-size: 12px; }
-        select.s-entregue { background: var(--color-success-bg); color: var(--color-success); border-color: #bbf7d0; }
-        select.s-encomendado { background: var(--color-info-bg); color: var(--color-info); border-color: #bae6fd; }
-        select.s-porencomendar { background: var(--color-warning-bg); color: var(--color-warning); border-color: #fef08a; }
+        /* Selects Internos Estilizados */
+        select.status-select, select.pay-select { 
+            font-weight: 700; 
+            font-size: 12px; 
+            text-align: center;
+            cursor: pointer;
+        }
+        select.s-entregue { background: var(--color-success-bg); color: var(--color-success); border-color: transparent; }
+        select.s-encomendado { background: rgba(56, 189, 248, 0.1); color: var(--brand-accent); border-color: transparent; }
+        select.s-porencomendar { background: var(--color-warning-bg); color: var(--color-warning); border-color: transparent; }
         
-        select.pay-select { font-weight: 600; font-size: 12px; }
-        select.p-pago { background: var(--color-success-bg); color: var(--color-success); border-color: #bbf7d0; }
-        select.p-naopago { background: var(--color-danger-bg); color: var(--color-danger); border-color: #fecaca; }
+        select.p-pago { background: var(--color-success-bg); color: var(--color-success); border-color: transparent; }
+        select.p-naopago { background: var(--color-danger-bg); color: var(--color-danger); border-color: transparent; }
 
         .btn-action-delete {
             grid-column: span 2;
@@ -277,7 +312,7 @@
             padding: 8px;
             border-radius: 6px;
             font-size: 12px;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
         }
@@ -285,101 +320,118 @@
         .btn-action-delete:hover {
             background: var(--color-danger-bg);
             color: var(--color-danger);
-            border-color: var(--color-danger);
+            border-color: rgba(239, 68, 68, 0.3);
         }
 
-        /* --- CLIENTS SECTION --- */
+        /* --- CLIENTS OVERVIEW --- */
         .client-financial-clean {
-            font-size: 13px;
-            font-weight: 600;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .history-panel {
             display: none;
             background: var(--bg-main);
-            border-radius: 8px;
-            padding: 10px;
+            border-radius: 6px;
+            padding: 12px;
             font-size: 13px;
+            border: 1px solid var(--border-color);
         }
 
         .history-row {
-            padding: 6px 0;
+            padding: 8px 0;
             border-bottom: 1px solid var(--border-color);
         }
         .history-row:last-child { border-bottom: none; }
 
         .btn-view-history {
-            background: var(--bg-main);
+            background: var(--bg-input);
             border: 1px solid var(--border-color);
             color: var(--text-main);
-            padding: 8px;
-            border-radius: 8px;
+            padding: 10px;
+            border-radius: 6px;
             font-size: 12px;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
             width: 100%;
+            transition: background 0.2s;
         }
 
-        /* --- FORMULÁRIO --- */
+        .btn-view-history:hover {
+            background: var(--border-color);
+        }
+
+        /* --- FORM STYLING --- */
         .form-section-title {
-            font-size: 14px;
-            font-weight: 700;
+            font-size: 12px;
+            font-weight: 800;
             color: var(--text-muted);
-            margin-bottom: 12px;
+            margin-bottom: 14px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
         }
 
         .product-input-row {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)) 40px;
+            grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)) 44px;
             gap: 8px;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
 
         .btn-row-remove {
             background: var(--color-danger-bg);
             color: var(--color-danger);
-            border: 1px solid #fecaca;
-            border-radius: 8px;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
         }
 
         .btn-add-item {
             background: none;
-            border: 1px dashed var(--brand-primary);
-            color: var(--brand-primary);
-            padding: 10px;
-            border-radius: 8px;
+            border: 1px dashed var(--text-muted);
+            color: var(--text-main);
+            padding: 12px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 13px;
-            font-weight: 600;
+            font-weight: 700;
             width: 100%;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
+            transition: all 0.2s;
+        }
+
+        .btn-add-item:hover {
+            border-color: var(--brand-primary);
+            background: rgba(255, 255, 255, 0.02);
         }
 
         .btn-submit-order {
             background: var(--brand-primary);
-            color: white;
+            color: var(--bg-main);
             border: none;
-            padding: 14px;
-            border-radius: 8px;
+            padding: 16px;
+            border-radius: 6px;
             font-size: 14px;
-            font-weight: 600;
+            font-weight: 800;
             cursor: pointer;
             width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: opacity 0.2s;
         }
 
         .btn-submit-order:hover {
-            background: var(--brand-primary-hover);
+            opacity: 0.9;
         }
 
         .loading-text {
             text-align: center;
             color: var(--text-muted);
             font-size: 14px;
-            padding: 20px;
+            padding: 40px;
             grid-column: span 3;
         }
     </style>
@@ -388,54 +440,53 @@
 
 <div class="dashboard-container">
     
-    <!-- DASHBOARD HEADER -->
     <div class="dash-header">
-        <h1>STADIO<span>PT</span></h1>
+        <svg class="logo-svg" viewBox="0 0 100 100">
+            <path d="M50 15 L82 85 L64 85 L50 51 L36 85 L18 85 Z" />
+        </svg>
+        <h1>STΛDIO</h1>
     </div>
 
-    <!-- KPI DASHBOARD METRICS -->
     <div class="metrics-grid">
         <div class="kpi-card">
             <span class="kpi-title">Total Vendas</span>
             <span class="kpi-value" id="kpi_total_sales">0.00€</span>
         </div>
-        <div class="kpi-card" style="border-left: 4px solid var(--color-warning);">
+        <div class="kpi-card">
             <span class="kpi-title">Por Receber</span>
             <span class="kpi-value" style="color: var(--color-warning);" id="kpi_pending_cash">0.00€</span>
         </div>
-        <div class="kpi-card" style="border-left: 4px solid var(--color-info);">
-            <span class="kpi-title">Encomendas</span>
+        <div class="kpi-card">
+            <span class="kpi-title">Artigos</span>
             <span class="kpi-value" id="kpi_total_orders">0</span>
         </div>
-        <div class="kpi-card" style="border-left: 4px solid var(--color-success);">
+        <div class="kpi-card">
             <span class="kpi-title">Entregues</span>
             <span class="kpi-value" style="color: var(--color-success);" id="kpi_delivered">0</span>
         </div>
     </div>
 
-    <!-- NAVIGATION BAR -->
     <div class="navigation-bar">
         <button class="nav-tab active" onclick="switchSection('lista-sec')">📦 Encomendas</button>
         <button class="nav-tab" onclick="switchSection('clientes-sec')">👤 Clientes</button>
-        <button class="nav-tab" onclick="switchSection('novo-sec')">➕ Nova Encomenda</button>
+        <button class="nav-tab" onclick="switchSection('novo-sec')">➕ Nova Venda</button>
     </div>
 
-    <!-- SECTION 1: ORDERS LIST -->
     <div id="lista-sec" class="tab-content active">
         <div class="clean-panel">
             <div class="filter-row">
                 <div class="filter-search">
-                    <input type="text" id="searchFilter" placeholder="Pesquisar cliente ou equipa...">
+                    <input type="text" id="searchFilter" placeholder="Procurar cliente, equipa ou tracking...">
                 </div>
                 <div class="filter-selects">
                     <select id="statusFilter">
-                        <option value="Todos">Todos os Estados</option>
+                        <option value="Todos">Filtro: Estado</option>
                         <option value="Encomendado">Encomendado</option>
                         <option value="Entregue">Entregue</option>
                         <option value="Por Encomendar">Por Encomendar</option>
                     </select>
                     <select id="payFilter">
-                        <option value="Todos">Todos Pagam.</option>
+                        <option value="Todos">Filtro: Pagamento</option>
                         <option value="Pago">Pago</option>
                         <option value="Não pago">Não pago</option>
                     </select>
@@ -443,11 +494,10 @@
             </div>
         </div>
         <div class="cards-layout" id="cardsContainer">
-            <div class="loading-text">A carregar base de dados...</div>
+            <div class="loading-text">A estabelecer ligação segura à nuvem STΛDIO...</div>
         </div>
     </div>
 
-    <!-- SECTION 2: CLIENTS OVERVIEW -->
     <div id="clientes-sec" class="tab-content">
         <div class="clean-panel">
             <input type="text" id="clientSearchFilter" placeholder="Filtrar por nome do cliente...">
@@ -455,19 +505,18 @@
         <div class="cards-layout" id="clientsContainer"></div>
     </div>
 
-    <!-- SECTION 3: FORM -->
     <div id="novo-sec" class="tab-content">
         <div class="clean-panel">
             <form id="orderForm">
-                <div class="form-section-title">Informação do Cliente</div>
+                <div class="form-section-title">Cliente</div>
                 <div style="margin-bottom: 20px;">
-                    <input type="text" id="form_cliente" placeholder="Escreve o nome do cliente" required>
+                    <input type="text" id="form_cliente" placeholder="Nome do cliente" required>
                 </div>
 
-                <div class="form-section-title">Camisolas Pedidas</div>
+                <div class="form-section-title">Lista de Artigos</div>
                 <div id="formProductsContainer">
                     <div class="product-input-row">
-                        <input type="text" placeholder="Equipa" required class="p_team">
+                        <input type="text" placeholder="Equipa/Artigo" required class="p_team">
                         <input type="text" placeholder="Personalização" class="p_custom">
                         <input type="text" placeholder="Tam." class="p_size">
                         <input type="number" value="1" min="1" class="p_qty">
@@ -476,9 +525,12 @@
                     </div>
                 </div>
 
-                <button type="button" class="btn-add-item" onclick="addProductRow()">+ Adicionar outra camisola ao mesmo cliente</button>
+                <button type="button" class="btn-add-item" onclick="addProductRow()">+ Adicionar mais um artigo a este pedido</button>
 
-                <div class="form-section-title">Definições Iniciais</div>
+                <div class="form-section-title">Informação Adicional & Fluxo</div>
+                <div style="margin-bottom: 16px;">
+                    <input type="text" id="form_tracking" placeholder="Número de Tracking (Opcional)">
+                </div>
                 <div class="card-selectors" style="margin-bottom: 24px;">
                     <select id="form_estado">
                         <option value="Encomendado">Encomendado</option>
@@ -491,7 +543,7 @@
                     </select>
                 </div>
 
-                <button type="submit" class="btn-submit-order">Gravar e Sincronizar na Nuvem</button>
+                <button type="submit" class="btn-submit-order">Sincronizar Novo Pedido</button>
             </form>
         </div>
     </div>
@@ -499,7 +551,7 @@
 </div>
 
 <script>
-    // ⚠️ ATENÇÃO: SUBSTITUI ESTE LINK PELO URL DO TEU GOOGLE APPS SCRIPT
+    // ⚠️ COLOCA AQUI O TEU LINK DO GOOGLE APPS SCRIPT
     const GOOGLE_API_URL = "O_TEU_URL_DA_APLICACAO_WEB_AQUI";
 
     let db = [];
@@ -521,8 +573,7 @@
             calculateMetrics();
             refreshUI();
         } catch (error) {
-            console.error("Erro ao carregar dados:", error);
-            // Fallback caso ainda não tenhas o link configurado para veres o aspeto visual
+            console.error("Erro de sincronização:", error);
             db = [];
             refreshUI();
         }
@@ -584,8 +635,24 @@
         });
     }
 
+    // Função para atualizar o número de tracking em tempo real
+    async function updateRowTracking(globalIndex, newTracking) {
+        db[globalIndex].tracking = newTracking.trim();
+        
+        await fetch(GOOGLE_API_URL, {
+            method: "POST",
+            body: JSON.stringify({
+                action: "update",
+                id: db[globalIndex].id,
+                cust: db[globalIndex].cust,
+                team: db[globalIndex].team,
+                tracking: newTracking.trim()
+            })
+        });
+    }
+
     async function deleteItem(index) {
-        if(confirm("Eliminar permanentemente da nuvem?")) {
+        if(confirm("Desejas eliminar este registo de forma permanente?")) {
             const idParaApagar = db[index].id;
             db.splice(index, 1);
             calculateMetrics();
@@ -608,7 +675,7 @@
         const div = document.createElement('div');
         div.className = 'product-input-row';
         div.innerHTML = `
-            <input type="text" placeholder="Equipa" required class="p_team">
+            <input type="text" placeholder="Equipa/Artigo" required class="p_team">
             <input type="text" placeholder="Personalização" class="p_custom">
             <input type="text" placeholder="Tam." class="p_size">
             <input type="number" value="1" min="1" class="p_qty">
@@ -633,12 +700,12 @@
     }
 
     function refreshUI() {
-        // --- 1. RENDER ENCOMENDAS ---
+        // --- RENDER ORDERS ---
         const container = document.getElementById('cardsContainer');
         container.innerHTML = '';
         
         if(db.length === 0) {
-            container.innerHTML = '<div class="loading-text">Nenhuma encomenda encontrada ou sem ligação.</div>';
+            container.innerHTML = '<div class="loading-text">Nenhum registo sincronizado ou folha vazia.</div>';
         }
 
         const searchVal = document.getElementById('searchFilter').value.toLowerCase();
@@ -646,7 +713,8 @@
         const payVal = document.getElementById('payFilter').value;
 
         db.forEach((enc, index) => {
-            if ((enc.cust.toLowerCase().includes(searchVal) || enc.team.toLowerCase().includes(searchVal)) &&
+            const trackingStr = enc.tracking ? enc.tracking.toLowerCase() : '';
+            if ((enc.cust.toLowerCase().includes(searchVal) || enc.team.toLowerCase().includes(searchVal) || trackingStr.includes(searchVal)) &&
                 (statusVal === "Todos" || enc.status === statusVal) &&
                 (payVal === "Todos" || enc.pay.toLowerCase() === payVal.toLowerCase())) {
 
@@ -661,9 +729,13 @@
                         <span class="badge-id">#${enc.id.toString().slice(-4)}</span>
                     </div>
                     <div class="card-details">
-                        <div class="detail-line"><span class="detail-label">Artigo:</span><span class="detail-value">${enc.team}</span></div>
+                        <div class="detail-line"><span class="detail-label">Modelo:</span><span class="detail-value">${enc.team}</span></div>
                         ${enc.custom ? `<div class="detail-line"><span class="detail-label">Custom:</span><span class="detail-value customization-text">${enc.custom}</span></div>` : ''}
-                        <div class="detail-line"><span class="detail-label">Info:</span><span class="detail-value">${enc.size} | ${enc.qty}x | ${parseFloat(enc.price).toFixed(2)}€</span></div>
+                        <div class="detail-line"><span class="detail-label">Especificações:</span><span class="detail-value">${enc.size} — ${enc.qty}x — ${parseFloat(enc.price).toFixed(2)}€</span></div>
+                        <div class="detail-line" style="margin-top: 4px;">
+                            <span class="detail-label">Tracking #:</span>
+                            <input type="text" class="inline-tracking-input" value="${enc.tracking || ''}" placeholder="Sem Rastreio" onchange="updateRowTracking(${index}, this.value)">
+                        </div>
                     </div>
                     <div class="card-selectors">
                         <select class="status-select ${sClass}" onchange="updateRowStatus(${index}, this.value)">
@@ -675,14 +747,14 @@
                             <option value="Não pago" ${enc.pay.toLowerCase() === 'não pago' ? 'selected' : ''}>Não pago</option>
                             <option value="Pago" ${enc.pay.toLowerCase() === 'pago' ? 'selected' : ''}>Pago</option>
                         </select>
-                        <button class="btn-action-delete" onclick="deleteItem(${index})">Remover do Registo</button>
+                        <button class="btn-action-delete" onclick="deleteItem(${index})">Remover Registo</button>
                     </div>
                 `;
                 container.appendChild(card);
             }
         });
 
-        // --- 2. RENDER CLIENTES AGREGADOS ---
+        // --- RENDER CLIENTS ---
         const clientContainer = document.getElementById('clientsContainer');
         clientContainer.innerHTML = '';
         const clientSearch = document.getElementById('clientSearchFilter').value.toLowerCase();
@@ -700,15 +772,15 @@
             if(nome.toLowerCase().includes(clientSearch)) {
                 const info = grouped[nome];
                 let financialStatus = info.debt > 0 
-                    ? `<span class="client-financial-clean" style="color:var(--color-danger);">Falta pagar: ${info.debt.toFixed(2)}€</span>`
-                    : `<span class="client-financial-clean" style="color:var(--color-success);">Liquidadado ✅</span>`;
+                    ? `<span class="client-financial-clean" style="color:var(--color-danger);">Débito: ${info.debt.toFixed(2)}€</span>`
+                    : `<span class="client-financial-clean" style="color:var(--color-success);">Regularizado</span>`;
 
                 let historyHTML = '';
                 info.items.forEach(c => {
                     historyHTML += `
                         <div class="history-row">
-                            <strong>${c.team}</strong> ${c.custom ? `(${c.custom})` : ''}<br>
-                            <span style="color:var(--text-muted); font-size:11px;">Tam: ${c.size} | Preço: ${c.price}€ | <strong>${c.status}</strong></span>
+                            <strong>${c.team}</strong> ${c.custom ? `[${c.custom}]` : ''}<br>
+                            <span style="color:var(--text-muted); font-size:11px;">Tam: ${c.size} | Tracking: ${c.tracking || '---'} | Est: ${c.status}</span>
                         </div>
                     `;
                 });
@@ -721,10 +793,10 @@
                         ${financialStatus}
                     </div>
                     <div class="card-details">
-                        <div class="detail-line"><span class="detail-label">Encomendas efetuadas:</span><span class="detail-value">${info.items.length} un.</span></div>
-                        <div class="detail-line"><span class="detail-label">Volume de Negócio:</span><span class="detail-value">${info.total.toFixed(2)}€</span></div>
+                        <div class="detail-line"><span class="detail-label">Artigos pedidos:</span><span class="detail-value">${info.items.length} un.</span></div>
+                        <div class="detail-line"><span class="detail-label">Movimentado total:</span><span class="detail-value">${info.total.toFixed(2)}€</span></div>
                     </div>
-                    <button class="btn-view-history" onclick="toggleHistoryBox('h-box-${cIdx}')">📋 Artigos</button>
+                    <button class="btn-view-history" onclick="toggleHistoryBox('h-box-${cIdx}')">📋 Ver Artigos</button>
                     <div class="history-panel" id="h-box-${cIdx}">${historyHTML}</div>
                 `;
                 clientContainer.appendChild(cCard);
@@ -737,9 +809,10 @@
         const clienteNome = document.getElementById('form_cliente').value.trim();
         const estado = document.getElementById('form_estado').value;
         const pagamento = document.getElementById('form_pagamento').value;
+        const trackingCode = document.getElementById('form_tracking').value.trim();
         const rows = document.querySelectorAll('.product-input-row');
 
-        const uniqueId = Date.now(); // ID numérico limpo baseado no tempo
+        const uniqueId = Date.now();
         const novasCamisolas = [];
 
         rows.forEach(row => {
@@ -752,7 +825,8 @@
                 qty: parseInt(row.querySelector('.p_qty').value) || 1,
                 price: parseFloat(row.querySelector('.p_price').value) || 15.00,
                 status: estado,
-                pay: pagamento
+                pay: pagamento,
+                tracking: trackingCode
             });
         });
 
@@ -769,7 +843,7 @@
         this.reset();
         document.getElementById('formProductsContainer').innerHTML = `
             <div class="product-input-row">
-                <input type="text" placeholder="Equipa" required class="p_team">
+                <input type="text" placeholder="Equipa/Artigo" required class="p_team">
                 <input type="text" placeholder="Personalização" class="p_custom">
                 <input type="text" placeholder="Tam." class="p_size">
                 <input type="number" value="1" min="1" class="p_qty">
