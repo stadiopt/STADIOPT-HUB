@@ -6,27 +6,26 @@
     <title>STΛDIO // Dashboard</title>
     <style>
         :root {
-            /* Paleta STΛDIO - Dark Tech Desportivo */
-            --bg-main: #0a0c10;
-            --bg-card: #121620;
-            --bg-input: #1a202c;
-            --border-color: #232d3f;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --brand-primary: #ffffff;
-            --brand-accent: #38bdf8; /* Azul cyan desportivo para realces */
+            /* Paleta STΛDIO - Light Minimalista Desportivo */
+            --bg-main: #f1f5f9;       /* Fundo cinza muito claro */
+            --bg-card: #ffffff;       /* Cartões puramente brancos */
+            --bg-input: #f8fafc;      /* Inputs ligeiramente acinzentados */
+            --border-color: #e2e8f0;  /* Bordas finas e subtis */
+            --text-main: #0f172a;     /* Texto principal escuro (quase preto) */
+            --text-muted: #64748b;    /* Texto secundário cinza */
+            --brand-primary: #0f172a; /* Logos e títulos em preto */
+            --brand-accent: #0284c7;  /* Azul desportivo vibrante para realces e tracking */
             
-            --color-success: #10b981;
-            --color-success-bg: rgba(16, 185, 129, 0.1);
-            --color-warning: #f59e0b;
-            --color-warning-bg: rgba(245, 158, 11, 0.1);
-            --color-danger: #ef4444;
-            --color-danger-bg: rgba(239, 68, 68, 0.1);
+            --color-success: #059669;
+            --color-success-bg: rgba(5, 150, 105, 0.1);
+            --color-warning: #d97706;
+            --color-warning-bg: rgba(217, 119, 6, 0.1);
+            --color-danger: #dc2626;
+            --color-danger-bg: rgba(220, 38, 38, 0.1);
         }
 
         body {
             background-color: var(--bg-main);
-            /* Grelha removida - Fundo liso e limpo */
             margin: 0;
             padding: 16px;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -87,7 +86,7 @@
             display: flex;
             flex-direction: column;
             gap: 4px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
         }
 
         .kpi-title {
@@ -113,6 +112,7 @@
             border-radius: 8px;
             margin-bottom: 24px;
             gap: 4px;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
         }
 
         .nav-tab {
@@ -132,7 +132,7 @@
         }
 
         .nav-tab.active {
-            background: var(--bg-input);
+            background: var(--bg-main);
             color: var(--brand-primary);
             border: 1px solid var(--border-color);
         }
@@ -152,7 +152,7 @@
             border-radius: 8px;
             padding: 20px;
             margin-bottom: 20px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
         }
 
         .filter-row {
@@ -187,7 +187,7 @@
 
         input:focus, select:focus {
             border-color: var(--text-muted);
-            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.05);
+            background: var(--bg-card);
         }
 
         input.inline-tracking-input {
@@ -199,10 +199,12 @@
             color: var(--text-main);
             text-align: center;
             font-family: monospace;
+            font-weight: 600;
         }
 
         input.inline-tracking-input:focus {
             border-color: var(--brand-accent);
+            background: var(--bg-card);
         }
 
         /* --- CARDS GRID LAYOUT --- */
@@ -227,7 +229,7 @@
             display: flex;
             flex-direction: column;
             gap: 14px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
         }
 
         .card-top {
@@ -294,7 +296,7 @@
             cursor: pointer;
         }
         select.s-entregue { background: var(--color-success-bg); color: var(--color-success); border-color: transparent; }
-        select.s-encomendado { background: rgba(56, 189, 248, 0.1); color: var(--brand-accent); border-color: transparent; }
+        select.s-encomendado { background: rgba(2, 132, 199, 0.1); color: var(--brand-accent); border-color: transparent; }
         select.s-porencomendar { background: var(--color-warning-bg); color: var(--color-warning); border-color: transparent; }
         
         select.p-pago { background: var(--color-success-bg); color: var(--color-success); border-color: transparent; }
@@ -316,7 +318,7 @@
         .btn-action-delete:hover {
             background: var(--color-danger-bg);
             color: var(--color-danger);
-            border-color: rgba(239, 68, 68, 0.3);
+            border-color: rgba(220, 38, 38, 0.3);
         }
 
         /* --- CLIENTS OVERVIEW --- */
@@ -379,7 +381,7 @@
         .btn-row-remove {
             background: var(--color-danger-bg);
             color: var(--color-danger);
-            border: 1px solid rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(220, 38, 38, 0.2);
             border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
@@ -401,12 +403,12 @@
 
         .btn-add-item:hover {
             border-color: var(--brand-primary);
-            background: rgba(255, 255, 255, 0.02);
+            background: rgba(0, 0, 0, 0.02);
         }
 
         .btn-submit-order {
             background: var(--brand-primary);
-            color: var(--bg-main);
+            color: var(--bg-card);
             border: none;
             padding: 16px;
             border-radius: 6px;
@@ -436,7 +438,6 @@
 
 <div class="dashboard-container">
     
-    <!-- BRAND HEADER -->
     <div class="dash-header">
         <svg class="logo-svg" viewBox="0 0 100 100">
             <path d="M50 15 L82 85 L64 85 L50 51 L36 85 L18 85 Z" />
@@ -444,7 +445,6 @@
         <h1>STΛDIO</h1>
     </div>
 
-    <!-- METRICS -->
     <div class="metrics-grid">
         <div class="kpi-card">
             <span class="kpi-title">Total Vendas</span>
@@ -464,14 +464,12 @@
         </div>
     </div>
 
-    <!-- NAVIGATION BAR -->
     <div class="navigation-bar">
         <button class="nav-tab active" onclick="switchSection('lista-sec')">📦 Encomendas</button>
         <button class="nav-tab" onclick="switchSection('clientes-sec')">👤 Clientes</button>
         <button class="nav-tab" onclick="switchSection('novo-sec')">➕ Nova Venda</button>
     </div>
 
-    <!-- SECTION 1: ORDERS -->
     <div id="lista-sec" class="tab-content active">
         <div class="clean-panel">
             <div class="filter-row">
@@ -498,7 +496,6 @@
         </div>
     </div>
 
-    <!-- SECTION 2: CLIENTS -->
     <div id="clientes-sec" class="tab-content">
         <div class="clean-panel">
             <input type="text" id="clientSearchFilter" placeholder="Filtrar por nome do cliente...">
@@ -506,7 +503,6 @@
         <div class="cards-layout" id="clientsContainer"></div>
     </div>
 
-    <!-- SECTION 3: NEW ORDER -->
     <div id="novo-sec" class="tab-content">
         <div class="clean-panel">
             <form id="orderForm">
