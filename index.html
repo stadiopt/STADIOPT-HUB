@@ -1,5 +1,438 @@
-db.push({                id: nextId,                 cust: inputCust,                team: row.querySelector('.p_team').value,                 custom: row.querySelector('.p_custom').value,                size: row.querySelector('.p_size').value,                 qty: parseInt(row.querySelector('.p_qty').value) || 1,                price: parseFloat(row.querySelector('.p_price').value) || 0,                status: status,                 pay: pay            });        });
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Vendas - STADIOPT</title>
+    <style>
+        :root {
+            --wp-primary: #2563eb;
+            --wp-primary-hover: #1d4ed8;
+            --wp-success: #16a34a;
+            --wp-danger: #dc2626;
+            --wp-background: #f8fafc;
+            --wp-text: #1e293b;
+        }
 
-        this.reset();        document.getElementById('productsContainer').innerHTML = `            <div class="form-grid product-row">                <input type="text" placeholder="Equipa" required class="p_team">                <input type="text" placeholder="Customização" class="p_custom">                <input type="text" placeholder="Tam." class="p_size">                <input type="number" value="1" min="1" class="p_qty">                <input type="number" value="15.00" step="0.01" class="p_price">                <button type="button" class="btn-delete" onclick="removeProductRow(this)" style="display:none; height: 38px;">X</button>            </div>        `;        save();    });
+        body {
+            background-color: #cbd5e1;
+            margin: 0;
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
 
-    refresh();</script></body></html>
+        .wp-gestao-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: var(--wp-background);
+            color: var(--wp-text);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+
+        .wp-gestao-container h2 {
+            text-align: center;
+            color: #0f172a;
+            margin-top: 10px;
+            margin-bottom: 30px;
+        }
+
+        .wp-panel {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+        }
+
+        .wp-panel-title {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #334155;
+            font-size: 16px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .wp-form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .wp-form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .wp-form-group label {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #475569;
+        }
+
+        .wp-form-group input, .wp-form-group select {
+            padding: 10px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 14px;
+            background: white;
+            color: var(--wp-text);
+            box-sizing: border-box;
+        }
+
+        .wp-btn-submit {
+            background-color: var(--wp-primary);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-size: 14px;
+            width: 100%;
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .wp-btn-submit:hover { background-color: var(--wp-primary-hover); }
+
+        .wp-btn-clear {
+            background-color: #64748b;
+            color: white;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 11px;
+            float: right;
+        }
+        .wp-btn-clear:hover { background-color: #475569; }
+
+        .wp-filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: flex-end;
+            background: #f1f5f9;
+            padding: 15px;
+            border-radius: 6px;
+        }
+
+        .wp-filter-group {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .wp-filter-group label {
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #64748b;
+        }
+
+        .wp-filter-group input, .wp-filter-group select {
+            padding: 8px 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 13px;
+            background: white;
+        }
+
+        .wp-table-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            overflow-x: auto;
+            margin-top: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        th {
+            background-color: #f8fafc;
+            color: #475569;
+            padding: 12px 16px;
+            font-weight: 600;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #e2e8f0;
+            color: var(--wp-text);
+        }
+
+        .wp-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .wp-badge-tamanho { background: #e2e8f0; color: #1e293b; }
+        .wp-badge-mulher { background: #fce7f3; color: #9d174d; }
+        .wp-badge-crianca { background: #ffe4e6; color: #9f1239; }
+
+        .wp-badge-entregue { background: #dcfce7; color: #15803d; }
+        .wp-badge-pendente { background: #fef9c3; color: #a16207; }
+        .wp-badge-pago { background: #dcfce7; color: #15803d; }
+        .wp-badge-naopago { background: #fee2e2; color: #b91c1c; }
+        .wp-badge-sinal { background: #e0f2fe; color: #0369a1; }
+
+        .wp-btn-delete {
+            background-color: var(--wp-danger);
+            color: white;
+            padding: 5px 10px;
+            font-size: 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .wp-btn-delete:hover { background-color: #b91c1c; }
+    </style>
+</head>
+<body>
+
+<div class="wp-gestao-container">
+    <button class="wp-btn-clear" onclick="wpForcarLimpeza()">⚙️ Limpar Memória</button>
+    <h2>STADIOPT - Gestão de Encomendas</h2>
+
+    <!-- FORMULÁRIO -->
+    <div class="wp-panel">
+        <div class="wp-panel-title">Nova Encomenda</div>
+        <div class="wp-form-grid">
+            <div class="wp-form-group">
+                <label for="wp_cliente">Cliente</label>
+                <input type="text" id="wp_cliente" placeholder="Ex: Paulo">
+            </div>
+            <div class="wp-form-group">
+                <label for="wp_artigo">Equipa / Artigo</label>
+                <input type="text" id="wp_artigo" placeholder="Ex: Portugal Pantera Negra">
+            </div>
+            <div class="wp-form-group">
+                <label for="wp_custom">Customização (Nome/Número)</label>
+                <input type="text" id="wp_custom" placeholder="Ex: Ronaldo #7">
+            </div>
+            <div class="wp-form-group">
+                <label for="wp_tamanho">Tamanho</label>
+                <select id="wp_tamanho">
+                    <optgroup label="Adulto">
+                        <option value="S">S</option>
+                        <option value="M">M</option>
+                        <option value="L" selected>L</option>
+                        <option value="XL">XL</option>
+                        <option value="XXL">XXL</option>
+                    </optgroup>
+                    <optgroup label="Mulher">
+                        <option value="Mulher S">Mulher S</option>
+                        <option value="Mulher M">Mulher M</option>
+                        <option value="Mulher L">Mulher L</option>
+                    </optgroup>
+                    <optgroup label="Criança">
+                        <option value="Criança 5/6 anos">Criança 5/6 anos</option>
+                        <option value="Criança 7/8 anos">Criança 7/8 anos</option>
+                        <option value="Criança 9/10 anos">Criança 9/10 anos</option>
+                        <option value="Criança 11/12 anos">Criança 11/12 anos</option>
+                    </optgroup>
+                </select>
+            </div>
+        </div>
+
+        <div class="wp-form-grid">
+            <div class="wp-form-group">
+                <label for="wp_preco">Preço (€)</label>
+                <input type="number" id="wp_preco" step="0.01" value="15.00">
+            </div>
+            <div class="wp-form-group">
+                <label for="wp_faltaPagar">Falta Pagar (€)</label>
+                <input type="number" id="wp_faltaPagar" step="0.01" value="0.00">
+            </div>
+            <div class="wp-form-group">
+                <label for="wp_estado">Estado</label>
+                <select id="wp_estado">
+                    <option value="Pendente">Pendente</option>
+                    <option value="Entregue">Entregue</option>
+                </select>
+            </div>
+            <div class="wp-form-group">
+                <label for="wp_pagamento">Pagamento</label>
+                <select id="wp_pagamento">
+                    <option value="Pago">Pago</option>
+                    <option value="Não Pago">Não Pago</option>
+                    <option value="Sinal">Sinal</option>
+                </select>
+            </div>
+        </div>
+        <button type="button" class="wp-btn-submit" onclick="wpAdicionarNovaEncomenda()">Adicionar Encomenda</button>
+    </div>
+
+    <!-- FILTROS -->
+    <div class="wp-panel">
+        <div class="wp-panel-title">Filtros de Pesquisa</div>
+        <div class="wp-filter-bar">
+            <div class="wp-filter-group" style="flex: 2;">
+                <label for="wp_searchFilter">Pesquisar Cliente ou Equipa</label>
+                <input type="text" id="wp_searchFilter" placeholder="Escreve para filtrar...">
+            </div>
+            <div class="wp-filter-group">
+                <label for="wp_statusFilter">Entrega</label>
+                <select id="wp_statusFilter">
+                    <option value="Todos">Todos</option>
+                    <option value="Pendente">Pendente</option>
+                    <option value="Entregue">Entregue</option>
+                </select>
+            </div>
+            <div class="wp-filter-group">
+                <label for="wp_payFilter">Pagamento</label>
+                <select id="wp_payFilter">
+                    <option value="Todos">Todos</option>
+                    <option value="Pago">Pago</option>
+                    <option value="Não Pago">Não Pago</option>
+                    <option value="Sinal">Sinal</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- TABELA -->
+    <div class="wp-table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nº</th>
+                    <th>Cliente</th>
+                    <th>Equipa / Artigo</th>
+                    <th>Customização</th>
+                    <th>Tam.</th>
+                    <th>Preço</th>
+                    <th>Falta Pagar</th>
+                    <th>Estado</th>
+                    <th>Pagamento</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="wp_tableBody"></tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    const wpRegistosIniciais = [
+        { cliente: "Paulo", artigo: "Portugal Pantera Negra", custom: "—", tamanho: "L", preco: "15.00", faltaPagar: "0.00", estado: "Entregue", pagamento: "Pago" },
+        { cliente: "Carlos", artigo: "Benfica Alternativa", custom: "Carlos #10", tamanho: "M", preco: "15.00", faltaPagar: "15.00", estado: "Pendente", pagamento: "Não Pago" }
+    ];
+
+    let wpEncomendas = JSON.parse(localStorage.getItem('stadiopt_db'));
+    
+    if (!wpEncomendas || !Array.isArray(wpEncomendas)) {
+        wpEncomendas = wpRegistosIniciais;
+        wpGravarDados();
+    }
+
+    function wpGravarDados() {
+        localStorage.setItem('stadiopt_db', JSON.stringify(wpEncomendas));
+    }
+
+    function wpRenderTable() {
+        const tbody = document.getElementById('wp_tableBody');
+        if(!tbody) return;
+        tbody.innerHTML = '';
+
+        const searchVal = document.getElementById('wp_searchFilter').value.toLowerCase();
+        const statusVal = document.getElementById('wp_statusFilter').value;
+        const payVal = document.getElementById('wp_payFilter').value;
+
+        wpEncomendas.forEach((enc, index) => {
+            const matchesSearch = (enc.cliente || '').toLowerCase().includes(searchVal) || (enc.artigo || '').toLowerCase().includes(searchVal);
+            const matchesStatus = (statusVal === "Todos") || (enc.estado === statusVal);
+            const matchesPay = (payVal === "Todos") || (enc.pagamento === payVal);
+
+            if (matchesSearch && matchesStatus && matchesPay) {
+                let payClass = 'wp-badge-naopago';
+                if(enc.pagamento === 'Pago') payClass = 'wp-badge-pago';
+                if(enc.pagamento === 'Sinal') payClass = 'wp-badge-sinal';
+
+                let tamanhoClass = 'wp-badge-tamanho';
+                if(enc.tamanho && enc.tamanho.includes('Mulher')) tamanhoClass = 'wp-badge-mulher';
+                if(enc.tamanho && enc.tamanho.includes('Criança')) tamanhoClass = 'wp-badge-crianca';
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${index + 1}</strong></td>
+                    <td>${enc.cliente || '—'}</td>
+                    <td>${enc.artigo || '—'}</td>
+                    <td>${enc.custom || '—'}</td>
+                    <td><span class="wp-badge ${tamanhoClass}">${enc.tamanho || 'L'}</span></td>
+                    <td>${parseFloat(enc.preco || 0).toFixed(2)} €</td>
+                    <td>${parseFloat(enc.faltaPagar || 0).toFixed(2)} €</td>
+                    <td><span class="wp-badge ${enc.estado === 'Entregue' ? 'wp-badge-entregue' : 'wp-badge-pendente'}">${enc.estado || 'Pendente'}</span></td>
+                    <td><span class="wp-badge ${payClass}">${enc.pagamento || 'Não Pago'}</span></td>
+                    <td><button class="wp-btn-delete" onclick="wpEliminarEncomenda(${index})">Eliminar</button></td>
+                `;
+                tbody.appendChild(tr);
+            }
+        });
+    }
+
+    function wpAdicionarNovaEncomenda() {
+        const c = document.getElementById('wp_cliente').value.trim() || "Sem Nome";
+        const a = document.getElementById('wp_artigo').value.trim() || "Sem Artigo";
+        const cust = document.getElementById('wp_custom').value.trim() || "—";
+        const t = document.getElementById('wp_tamanho').value;
+        const p = document.getElementById('wp_preco').value || "15.00";
+        const f = document.getElementById('wp_faltaPagar').value || "0.00";
+        const e = document.getElementById('wp_estado').value;
+        const pag = document.getElementById('wp_pagamento').value;
+
+        wpEncomendas.push({ cliente: c, artigo: a, custom: cust, tamanho: t, preco: p, faltaPagar: f, estado: e, pagamento: pag });
+        wpGravarDados();
+        wpRenderTable();
+        
+        document.getElementById('wp_cliente').value = "";
+        document.getElementById('wp_artigo').value = "";
+        document.getElementById('wp_custom').value = "";
+        document.getElementById('wp_preco').value = "15.00";
+        document.getElementById('wp_faltaPagar').value = "0.00";
+    }
+
+    function wpForcarLimpeza() {
+        if(confirm("Deseja mesmo resetar a memória local?")) {
+            localStorage.removeItem('stadiopt_db');
+            wpEncomendas = wpRegistosIniciais;
+            wpGravarDados();
+            wpRenderTable();
+        }
+    }
+
+    function wpEliminarEncomenda(index) {
+        if(confirm("Eliminar esta encomenda?")) {
+            wpEncomendas.splice(index, 1);
+            wpGravarDados();
+            wpRenderTable();
+        }
+    }
+
+    window.onload = function() {
+        document.getElementById('wp_searchFilter').addEventListener('input', wpRenderTable);
+        document.getElementById('wp_statusFilter').addEventListener('change', wpRenderTable);
+        document.getElementById('wp_payFilter').addEventListener('change', wpRenderTable);
+        wpRenderTable();
+    };
+</script>
+</body>
+</html>
