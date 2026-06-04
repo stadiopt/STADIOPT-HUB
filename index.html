@@ -6,6 +6,7 @@
     <title>STΛDIO // Dashboard</title>
     <style>
         :root {
+            /* Paleta STΛDIO - Dark Tech Desportivo */
             --bg-main: #0a0c10;
             --bg-card: #121620;
             --bg-input: #1a202c;
@@ -13,7 +14,7 @@
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --brand-primary: #ffffff;
-            --brand-accent: #38bdf8;
+            --brand-accent: #38bdf8; /* Azul cyan desportivo para realces */
             
             --color-success: #10b981;
             --color-success-bg: rgba(16, 185, 129, 0.1);
@@ -25,6 +26,7 @@
 
         body {
             background-color: var(--bg-main);
+            /* Grelha removida - Fundo liso e limpo */
             margin: 0;
             padding: 16px;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -37,6 +39,7 @@
             margin: 0 auto;
         }
 
+        /* --- HEADER STΛDIO --- */
         .dash-header {
             display: flex;
             flex-direction: column;
@@ -62,6 +65,7 @@
             text-align: center;
         }
 
+        /* --- KPI METRICS --- */
         .metrics-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -100,6 +104,7 @@
             color: var(--text-main);
         }
 
+        /* --- NAVIGATION TABS --- */
         .navigation-bar {
             display: flex;
             background: var(--bg-card);
@@ -132,9 +137,15 @@
             border: 1px solid var(--border-color);
         }
 
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
+        .tab-content {
+            display: none;
+        }
 
+        .tab-content.active {
+            display: block;
+        }
+
+        /* --- PANELS & FORMS --- */
         .clean-panel {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
@@ -144,6 +155,23 @@
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
         }
 
+        .filter-row {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        @media (min-width: 768px) {
+            .filter-row { flex-direction: row; }
+            .filter-search { flex: 2; }
+            .filter-selects { flex: 1; display: flex; gap: 8px; }
+        }
+
+        .filter-selects {
+            display: flex;
+            gap: 8px;
+        }
+
         input, select {
             background: var(--bg-input);
             border: 1px solid var(--border-color);
@@ -151,8 +179,15 @@
             border-radius: 6px;
             font-size: 14px;
             color: var(--text-main);
+            box-sizing: border-box;
             width: 100%;
             outline: none;
+            transition: all 0.2s;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--text-muted);
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.05);
         }
 
         input.inline-tracking-input {
@@ -166,6 +201,11 @@
             font-family: monospace;
         }
 
+        input.inline-tracking-input:focus {
+            border-color: var(--brand-accent);
+        }
+
+        /* --- CARDS GRID LAYOUT --- */
         .cards-layout {
             display: grid;
             grid-template-columns: 1fr;
@@ -173,9 +213,12 @@
         }
 
         @media (min-width: 768px) {
-            .cards-layout { grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); }
+            .cards-layout {
+                grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            }
         }
 
+        /* --- CARDS DESIGN --- */
         .order-item-card, .client-summary-card {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
@@ -184,28 +227,216 @@
             display: flex;
             flex-direction: column;
             gap: 14px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15);
         }
 
-        .card-top { display: flex; justify-content: space-between; align-items: center; }
-        .client-name { font-size: 16px; font-weight: 700; }
-        .badge-id { font-size: 11px; font-weight: 700; background: var(--bg-input); padding: 3px 8px; border-radius: 4px; border: 1px solid var(--border-color); }
-        .card-details { display: flex; flex-direction: column; gap: 8px; font-size: 14px; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); padding: 12px 0; }
-        .detail-line { display: flex; justify-content: space-between; align-items: center; }
-        .detail-label { color: var(--text-muted); }
-        .detail-value { font-weight: 600; }
-        .customization-text { color: var(--brand-accent); }
-        .card-selectors { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .client-name {
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+
+        .badge-id {
+            font-size: 11px;
+            font-weight: 700;
+            background: var(--bg-input);
+            color: var(--text-muted);
+            padding: 3px 8px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+        }
+
+        .card-details {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 14px;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 0;
+        }
+
+        .detail-line {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .detail-label {
+            color: var(--text-muted);
+        }
+
+        .detail-value {
+            font-weight: 600;
+        }
+
+        .customization-text {
+            color: var(--brand-accent);
+        }
+
+        .card-selectors {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        /* Selects Internos Estilizados */
+        select.status-select, select.pay-select { 
+            font-weight: 700; 
+            font-size: 12px; 
+            text-align: center;
+            cursor: pointer;
+        }
+        select.s-entregue { background: var(--color-success-bg); color: var(--color-success); border-color: transparent; }
+        select.s-encomendado { background: rgba(56, 189, 248, 0.1); color: var(--brand-accent); border-color: transparent; }
+        select.s-porencomendar { background: var(--color-warning-bg); color: var(--color-warning); border-color: transparent; }
         
-        .btn-action-delete { grid-column: span 2; background: none; border: 1px dashed var(--border-color); color: var(--text-muted); padding: 8px; border-radius: 6px; font-size: 12px; cursor: pointer; }
-        
-        .btn-submit-order { background: var(--brand-primary); color: var(--bg-main); border: none; padding: 16px; border-radius: 6px; font-weight: 800; cursor: pointer; width: 100%; text-transform: uppercase; }
-        
-        .loading-text { text-align: center; color: var(--text-muted); padding: 40px; }
+        select.p-pago { background: var(--color-success-bg); color: var(--color-success); border-color: transparent; }
+        select.p-naopago { background: var(--color-danger-bg); color: var(--color-danger); border-color: transparent; }
+
+        .btn-action-delete {
+            grid-column: span 2;
+            background: none;
+            border: 1px dashed var(--border-color);
+            color: var(--text-muted);
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-action-delete:hover {
+            background: var(--color-danger-bg);
+            color: var(--color-danger);
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        /* --- CLIENTS OVERVIEW --- */
+        .client-financial-clean {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .history-panel {
+            display: none;
+            background: var(--bg-main);
+            border-radius: 6px;
+            padding: 12px;
+            font-size: 13px;
+            border: 1px solid var(--border-color);
+        }
+
+        .history-row {
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .history-row:last-child { border-bottom: none; }
+
+        .btn-view-history {
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s;
+        }
+
+        .btn-view-history:hover {
+            background: var(--border-color);
+        }
+
+        /* --- FORM STYLING --- */
+        .form-section-title {
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .product-input-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)) 44px;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .btn-row-remove {
+            background: var(--color-danger-bg);
+            color: var(--color-danger);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-add-item {
+            background: none;
+            border: 1px dashed var(--text-muted);
+            color: var(--text-main);
+            padding: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 700;
+            width: 100%;
+            margin-bottom: 24px;
+            transition: all 0.2s;
+        }
+
+        .btn-add-item:hover {
+            border-color: var(--brand-primary);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .btn-submit-order {
+            background: var(--brand-primary);
+            color: var(--bg-main);
+            border: none;
+            padding: 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: opacity 0.2s;
+        }
+
+        .btn-submit-order:hover {
+            opacity: 0.9;
+        }
+
+        .loading-text {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 14px;
+            padding: 40px;
+            grid-column: span 3;
+        }
     </style>
 </head>
 <body>
 
 <div class="dashboard-container">
+    
+    <!-- BRAND HEADER -->
     <div class="dash-header">
         <svg class="logo-svg" viewBox="0 0 100 100">
             <path d="M50 15 L82 85 L64 85 L50 51 L36 85 L18 85 Z" />
@@ -213,14 +444,423 @@
         <h1>STΛDIO</h1>
     </div>
 
-    <!-- Resto do conteúdo permanece igual -->
-    <!-- (Mantive a estrutura anterior para economizar espaço, o código funcional é o mesmo) -->
-    
-    <!-- ... -->
+    <!-- METRICS -->
+    <div class="metrics-grid">
+        <div class="kpi-card">
+            <span class="kpi-title">Total Vendas</span>
+            <span class="kpi-value" id="kpi_total_sales">0.00€</span>
+        </div>
+        <div class="kpi-card">
+            <span class="kpi-title">Por Receber</span>
+            <span class="kpi-value" style="color: var(--color-warning);" id="kpi_pending_cash">0.00€</span>
+        </div>
+        <div class="kpi-card">
+            <span class="kpi-title">Artigos</span>
+            <span class="kpi-value" id="kpi_total_orders">0</span>
+        </div>
+        <div class="kpi-card">
+            <span class="kpi-title">Entregues</span>
+            <span class="kpi-value" style="color: var(--color-success);" id="kpi_delivered">0</span>
+        </div>
+    </div>
+
+    <!-- NAVIGATION BAR -->
+    <div class="navigation-bar">
+        <button class="nav-tab active" onclick="switchSection('lista-sec')">📦 Encomendas</button>
+        <button class="nav-tab" onclick="switchSection('clientes-sec')">👤 Clientes</button>
+        <button class="nav-tab" onclick="switchSection('novo-sec')">➕ Nova Venda</button>
+    </div>
+
+    <!-- SECTION 1: ORDERS -->
+    <div id="lista-sec" class="tab-content active">
+        <div class="clean-panel">
+            <div class="filter-row">
+                <div class="filter-search">
+                    <input type="text" id="searchFilter" placeholder="Procurar cliente, equipa ou tracking...">
+                </div>
+                <div class="filter-selects">
+                    <select id="statusFilter">
+                        <option value="Todos">Filtro: Estado</option>
+                        <option value="Encomendado">Encomendado</option>
+                        <option value="Entregue">Entregue</option>
+                        <option value="Por Encomendar">Por Encomendar</option>
+                    </select>
+                    <select id="payFilter">
+                        <option value="Todos">Filtro: Pagamento</option>
+                        <option value="Pago">Pago</option>
+                        <option value="Não pago">Não pago</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="cards-layout" id="cardsContainer">
+            <div class="loading-text">A estabelecer ligação segura à nuvem STΛDIO...</div>
+        </div>
+    </div>
+
+    <!-- SECTION 2: CLIENTS -->
+    <div id="clientes-sec" class="tab-content">
+        <div class="clean-panel">
+            <input type="text" id="clientSearchFilter" placeholder="Filtrar por nome do cliente...">
+        </div>
+        <div class="cards-layout" id="clientsContainer"></div>
+    </div>
+
+    <!-- SECTION 3: NEW ORDER -->
+    <div id="novo-sec" class="tab-content">
+        <div class="clean-panel">
+            <form id="orderForm">
+                <div class="form-section-title">Cliente</div>
+                <div style="margin-bottom: 20px;">
+                    <input type="text" id="form_cliente" placeholder="Nome do cliente" required>
+                </div>
+
+                <div class="form-section-title">Lista de Artigos</div>
+                <div id="formProductsContainer">
+                    <div class="product-input-row">
+                        <input type="text" placeholder="Equipa/Artigo" required class="p_team">
+                        <input type="text" placeholder="Personalização" class="p_custom">
+                        <input type="text" placeholder="Tam." class="p_size">
+                        <input type="number" value="1" min="1" class="p_qty">
+                        <input type="number" value="15.00" step="0.01" class="p_price">
+                        <button type="button" class="btn-row-remove" onclick="removeProductRow(this)" style="display:none;">X</button>
+                    </div>
+                </div>
+
+                <button type="button" class="btn-add-item" onclick="addProductRow()">+ Adicionar mais um artigo a este pedido</button>
+
+                <div class="form-section-title">Informação Adicional & Fluxo</div>
+                <div style="margin-bottom: 16px;">
+                    <input type="text" id="form_tracking" placeholder="Número de Tracking (Opcional)">
+                </div>
+                <div class="card-selectors" style="margin-bottom: 24px;">
+                    <select id="form_estado">
+                        <option value="Encomendado">Encomendado</option>
+                        <option value="Entregue">Entregue</option>
+                        <option value="Por Encomendar">Por Encomendar</option>
+                    </select>
+                    <select id="form_pagamento">
+                        <option value="Não pago">Não pago</option>
+                        <option value="Pago">Pago</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-submit-order">Sincronizar Novo Pedido</button>
+            </form>
+        </div>
+    </div>
+
 </div>
 
 <script>
-    // Mantém a mesma lógica funcional anterior
+    // ⚠️ COLOCA AQUI O TEU LINK DO GOOGLE APPS SCRIPT
+    const GOOGLE_API_URL = "O_TEU_URL_DA_APLICACAO_WEB_AQUI";
+
+    let db = [];
+
+    function switchSection(tabId) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
+
+        document.getElementById(tabId).classList.add('active');
+        
+        const btnIndex = tabId === 'lista-sec' ? 0 : tabId === 'clientes-sec' ? 1 : 2;
+        document.querySelectorAll('.nav-tab')[btnIndex].classList.add('active');
+    }
+
+    async function carregarDadosDaNuvem() {
+        try {
+            const response = await fetch(GOOGLE_API_URL);
+            db = await response.json();
+            calculateMetrics();
+            refreshUI();
+        } catch (error) {
+            console.error("Erro de sincronização:", error);
+            db = [];
+            refreshUI();
+        }
+    }
+
+    function calculateMetrics() {
+        let totalSales = 0;
+        let pendingCash = 0;
+        let deliveredCount = 0;
+
+        db.forEach(item => {
+            let itemCost = parseFloat(item.price || 15) * (parseInt(item.qty) || 1);
+            totalSales += itemCost;
+            if(item.pay.toLowerCase() !== 'pago') {
+                pendingCash += itemCost;
+            }
+            if(item.status.toLowerCase() === 'entregue') {
+                deliveredCount++;
+            }
+        });
+
+        document.getElementById('kpi_total_sales').innerText = totalSales.toFixed(2) + '€';
+        document.getElementById('kpi_pending_cash').innerText = pendingCash.toFixed(2) + '€';
+        document.getElementById('kpi_total_orders').innerText = db.length;
+        document.getElementById('kpi_delivered').innerText = deliveredCount;
+    }
+
+    async function updateRowStatus(globalIndex, newStatus) {
+        db[globalIndex].status = newStatus;
+        calculateMetrics();
+        refreshUI();
+        
+        await fetch(GOOGLE_API_URL, {
+            method: "POST",
+            body: JSON.stringify({
+                action: "update",
+                id: db[globalIndex].id,
+                cust: db[globalIndex].cust,
+                team: db[globalIndex].team,
+                status: newStatus
+            })
+        });
+    }
+
+    async function updateRowPay(globalIndex, newPay) {
+        db[globalIndex].pay = newPay;
+        calculateMetrics();
+        refreshUI();
+        
+        await fetch(GOOGLE_API_URL, {
+            method: "POST",
+            body: JSON.stringify({
+                action: "update",
+                id: db[globalIndex].id,
+                cust: db[globalIndex].cust,
+                team: db[globalIndex].team,
+                pay: newPay
+            })
+        });
+    }
+
+    async function updateRowTracking(globalIndex, newTracking) {
+        db[globalIndex].tracking = newTracking.trim();
+        
+        await fetch(GOOGLE_API_URL, {
+            method: "POST",
+            body: JSON.stringify({
+                action: "update",
+                id: db[globalIndex].id,
+                cust: db[globalIndex].cust,
+                team: db[globalIndex].team,
+                tracking: newTracking.trim()
+            })
+        });
+    }
+
+    async function deleteItem(index) {
+        if(confirm("Desejas eliminar este registo de forma permanente?")) {
+            const idParaApagar = db[index].id;
+            db.splice(index, 1);
+            calculateMetrics();
+            refreshUI();
+            
+            await fetch(GOOGLE_API_URL, {
+                method: "POST",
+                body: JSON.stringify({ action: "delete", id: idParaApagar })
+            });
+        }
+    }
+
+    function toggleHistoryBox(id) {
+        const box = document.getElementById(id);
+        box.style.display = box.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function addProductRow() {
+        const container = document.getElementById('formProductsContainer');
+        const div = document.createElement('div');
+        div.className = 'product-input-row';
+        div.innerHTML = `
+            <input type="text" placeholder="Equipa/Artigo" required class="p_team">
+            <input type="text" placeholder="Personalização" class="p_custom">
+            <input type="text" placeholder="Tam." class="p_size">
+            <input type="number" value="1" min="1" class="p_qty">
+            <input type="number" value="15.00" step="0.01" class="p_price">
+            <button type="button" class="btn-row-remove" onclick="removeProductRow(this)">X</button>
+        `;
+        container.appendChild(div);
+        updateDeleteButtonsVisibility();
+    }
+
+    function removeProductRow(btn) {
+        btn.parentElement.remove();
+        updateDeleteButtonsVisibility();
+    }
+
+    function updateDeleteButtonsVisibility() {
+        const rows = document.querySelectorAll('.product-input-row');
+        rows.forEach(row => {
+            const btn = row.querySelector('.btn-row-remove');
+            if(btn) btn.style.display = rows.length === 1 ? 'none' : 'block';
+        });
+    }
+
+    function refreshUI() {
+        // --- RENDER ORDERS ---
+        const container = document.getElementById('cardsContainer');
+        container.innerHTML = '';
+        
+        if(db.length === 0) {
+            container.innerHTML = '<div class="loading-text">Nenhum registo sincronizado ou folha vazia.</div>';
+        }
+
+        const searchVal = document.getElementById('searchFilter').value.toLowerCase();
+        const statusVal = document.getElementById('statusFilter').value;
+        const payVal = document.getElementById('payFilter').value;
+
+        db.forEach((enc, index) => {
+            const trackingStr = enc.tracking ? enc.tracking.toLowerCase() : '';
+            if ((enc.cust.toLowerCase().includes(searchVal) || enc.team.toLowerCase().includes(searchVal) || trackingStr.includes(searchVal)) &&
+                (statusVal === "Todos" || enc.status === statusVal) &&
+                (payVal === "Todos" || enc.pay.toLowerCase() === payVal.toLowerCase())) {
+
+                let sClass = enc.status === 'Entregue' ? 's-entregue' : enc.status === 'Por Encomendar' ? 's-porencomendar' : 's-encomendado';
+                let pClass = enc.pay.toLowerCase() === 'pago' ? 'p-pago' : 'p-naopago';
+
+                const card = document.createElement('div');
+                card.className = 'order-item-card';
+                card.innerHTML = `
+                    <div class="card-top">
+                        <span class="client-name">${enc.cust}</span>
+                        <span class="badge-id">#${enc.id.toString().slice(-4)}</span>
+                    </div>
+                    <div class="card-details">
+                        <div class="detail-line"><span class="detail-label">Modelo:</span><span class="detail-value">${enc.team}</span></div>
+                        \${enc.custom ? `<div class="detail-line"><span class="detail-label">Custom:</span><span class="detail-value customization-text">\${enc.custom}</span></div>` : ''}
+                        <div class="detail-line"><span class="detail-label">Especificações:</span><span class="detail-value">\${enc.size} — \${enc.qty}x — \${parseFloat(enc.price).toFixed(2)}€</span></div>
+                        <div class="detail-line" style="margin-top: 4px;">
+                            <span class="detail-label">Tracking #:</span>
+                            <input type="text" class="inline-tracking-input" value="\${enc.tracking || ''}" placeholder="Sem Rastreio" onchange="updateRowTracking(\${index}, this.value)">
+                        </div>
+                    </div>
+                    <div class="card-selectors">
+                        <select class="status-select \${sClass}" onchange="updateRowStatus(\${index}, this.value)">
+                            <option value="Encomendado" \${enc.status === 'Encomendado' ? 'selected' : ''}>Encomendado</option>
+                            <option value="Entregue" \${enc.status === 'Entregue' ? 'selected' : ''}>Entregue</option>
+                            <option value="Por Encomendar" \${enc.status === 'Por Encomendar' ? 'selected' : ''}>Por Encomendar</option>
+                        </select>
+                        <select class="pay-select \${pClass}" onchange="updateRowPay(\${index}, this.value)">
+                            <option value="Não pago" \${enc.pay.toLowerCase() === 'não pago' ? 'selected' : ''}>Não pago</option>
+                            <option value="Pago" \${enc.pay.toLowerCase() === 'pago' ? 'selected' : ''}>Pago</option>
+                        </select>
+                        <button class="btn-action-delete" onclick="deleteItem(\${index})">Remover Registo</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            }
+        });
+
+        // --- RENDER CLIENTS ---
+        const clientContainer = document.getElementById('clientsContainer');
+        clientContainer.innerHTML = '';
+        const clientSearch = document.getElementById('clientSearchFilter').value.toLowerCase();
+
+        const grouped = {};
+        db.forEach(enc => {
+            if(!grouped[enc.cust]) grouped[enc.cust] = { items: [], debt: 0, total: 0 };
+            grouped[enc.cust].items.push(enc);
+            let val = parseFloat(enc.price) * parseInt(enc.qty);
+            grouped[enc.cust].total += val;
+            if(enc.pay.toLowerCase() !== 'pago') grouped[enc.cust].debt += val;
+        });
+
+        Object.keys(grouped).forEach((nome, cIdx) => {
+            if(nome.toLowerCase().includes(clientSearch)) {
+                const info = grouped[nome];
+                let financialStatus = info.debt > 0 
+                    ? `<span class="client-financial-clean" style="color:var(--color-danger);">Débito: \${info.debt.toFixed(2)}€</span>`
+                    : `<span class="client-financial-clean" style="color:var(--color-success);">Regularizado</span>`;
+
+                let historyHTML = '';
+                info.items.forEach(c => {
+                    historyHTML += `
+                        <div class="history-row">
+                            <strong>\${c.team}</strong> \${c.custom ? `[\${c.custom}]` : ''}<br>
+                            <span style="color:var(--text-muted); font-size:11px;">Tam: \${c.size} | Tracking: \${c.tracking || '---'} | Est: \${c.status}</span>
+                        </div>
+                    `;
+                });
+
+                const cCard = document.createElement('div');
+                cCard.className = 'client-summary-card';
+                cCard.innerHTML = `
+                    <div class="card-top">
+                        <span class="client-name">\${nome}</span>
+                        \${financialStatus}
+                    </div>
+                    <div class="card-details">
+                        <div class="detail-line"><span class="detail-label">Artigos pedidos:</span><span class="detail-value">\${info.items.length} un.</span></div>
+                        <div class="detail-line"><span class="detail-label">Movimentado total:</span><span class="detail-value">\${info.total.toFixed(2)}€</span></div>
+                    </div>
+                    <button class="btn-view-history" onclick="toggleHistoryBox('h-box-\${cIdx}')">📋 Ver Artigos</button>
+                    <div class="history-panel" id="h-box-\${cIdx}">\${historyHTML}</div>
+                `;
+                clientContainer.appendChild(cCard);
+            }
+        });
+    }
+
+    document.getElementById('orderForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const clienteNome = document.getElementById('form_cliente').value.trim();
+        const estado = document.getElementById('form_estado').value;
+        const pagamento = document.getElementById('form_pagamento').value;
+        const trackingCode = document.getElementById('form_tracking').value.trim();
+        const rows = document.querySelectorAll('.product-input-row');
+
+        const uniqueId = Date.now();
+        const novasCamisolas = [];
+
+        rows.forEach(row => {
+            novasCamisolas.push({
+                id: uniqueId,
+                cust: clienteNome,
+                team: row.querySelector('.p_team').value,
+                custom: row.querySelector('.p_custom').value,
+                size: row.querySelector('.p_size').value,
+                qty: parseInt(row.querySelector('.p_qty').value) || 1,
+                price: parseFloat(row.querySelector('.p_price').value) || 15.00,
+                status: estado,
+                pay: pagamento,
+                tracking: trackingCode
+            });
+        });
+
+        db.push(...novasCamisolas);
+        calculateMetrics();
+        refreshUI();
+        switchSection('lista-sec');
+
+        await fetch(GOOGLE_API_URL, {
+            method: "POST",
+            body: JSON.stringify({ action: "insert_multiple", orders: novasCamisolas })
+        });
+
+        this.reset();
+        document.getElementById('formProductsContainer').innerHTML = `
+            <div class="product-input-row">
+                <input type="text" placeholder="Equipa/Artigo" required class="p_team">
+                <input type="text" placeholder="Personalização" class="p_custom">
+                <input type="text" placeholder="Tam." class="p_size">
+                <input type="number" value="1" min="1" class="p_qty">
+                <input type="number" value="15.00" step="0.01" class="p_price">
+                <button type="button" class="btn-row-remove" onclick="removeProductRow(this)" style="display:none;">X</button>
+            </div>
+        `;
+    });
+
+    window.onload = function() {
+        document.getElementById('searchFilter').addEventListener('input', refreshUI);
+        document.getElementById('clientSearchFilter').addEventListener('input', refreshUI);
+        document.getElementById('statusFilter').addEventListener('change', refreshUI);
+        document.getElementById('payFilter').addEventListener('change', refreshUI);
+        carregarDadosDaNuvem();
+    };
 </script>
 </body>
 </html>
