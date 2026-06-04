@@ -38,30 +38,30 @@
             margin: 0 auto;
         }
 
-        /* --- HEADER STΛDIO --- */
+        /* --- HEADER STΛDIO (Alterado para Horizontal) --- */
         .dash-header {
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             align-items: center;
             justify-content: center;
             margin-bottom: 30px;
-            padding: 20px 0 10px 0;
-            gap: 12px;
+            padding: 24px 0 12px 0;
+            gap: 16px; /* Espaço entre o ícone e o texto */
         }
 
         .logo-svg {
-            width: 46px;
-            height: 46px;
+            width: 38px;
+            height: 38px;
             fill: var(--brand-primary);
         }
 
         .dash-header h1 {
-            font-size: 26px;
+            font-size: 28px;
             font-weight: 900;
             margin: 0;
-            letter-spacing: 4px;
+            letter-spacing: 6px; /* Mantém o estilo desportivo expandido */
             color: var(--brand-primary);
-            text-align: center;
+            line-height: 1;
         }
 
         /* --- KPI MENU GRID (Transformado em Menu) --- */
@@ -373,6 +373,7 @@
 
 <div class="dashboard-container">
     
+    <!-- BRAND HEADER (AGORA EM HORIZONTAL) -->
     <div class="dash-header">
         <svg class="logo-svg" viewBox="0 0 100 100">
             <path d="M50 15 L82 85 L64 85 L50 51 L36 85 L18 85 Z" />
@@ -380,6 +381,7 @@
         <h1>STΛDIO</h1>
     </div>
 
+    <!-- METRICS GRID (MENU DE NAVEGAÇÃO) -->
     <div class="metrics-grid">
         <div class="kpi-card" id="menu-novo" onclick="switchSection('novo-sec', 'menu-novo')">
             <span class="kpi-title">✨ Menu Vendas</span>
@@ -399,6 +401,7 @@
         </div>
     </div>
 
+    <!-- SECTION 1: ORDERS -->
     <div id="lista-sec" class="tab-content active">
         <div class="clean-panel">
             <div class="filter-row">
@@ -423,6 +426,7 @@
         <div class="cards-layout" id="cardsContainer"></div>
     </div>
 
+    <!-- SECTION 2: CLIENTS -->
     <div id="clientes-sec" class="tab-content">
         <div class="clean-panel">
             <input type="text" id="clientSearchFilter" placeholder="Filtrar por nome do cliente...">
@@ -430,6 +434,7 @@
         <div class="cards-layout" id="clientsContainer"></div>
     </div>
 
+    <!-- SECTION 3: NEW ORDER -->
     <div id="novo-sec" class="tab-content">
         <div class="clean-panel">
             <form id="orderForm">
@@ -476,7 +481,7 @@
 </div>
 
 <script>
-    // Base de dados com o histórico real fornecido
+    // Base de dados
     const initialData = [
         { id: 1, cust: "Paulo", team: "Portugal Pantera Negra", custom: "", size: "L", qty: 1, price: 15, status: "Entregue", pay: "Pago", tracking: "" },
         { id: 1, cust: "Paulo", team: "Alemanha Preta", custom: "", size: "L", qty: 1, price: 15, status: "Entregue", pay: "Pago", tracking: "" },
@@ -526,18 +531,15 @@
     }
 
     function switchSection(tabId, cardId) {
-        // Alternar visibilidade das secções
         document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
         document.getElementById(tabId).classList.add('active');
         
-        // Alternar classe ativa nos cartões do menu
         document.querySelectorAll('.kpi-card').forEach(el => el.classList.remove('active'));
         if(cardId) {
             document.getElementById(cardId).classList.add('active');
         }
     }
 
-    // Filtros Rápidos acionados pelos cartões de estatísticas
     function filterByNotPaid() {
         document.getElementById('payFilter').value = 'Não pago';
         document.getElementById('statusFilter').value = 'Todos';
@@ -740,7 +742,6 @@
         const trackingCode = document.getElementById('form_tracking').value.trim();
         const rows = document.querySelectorAll('.product-input-row');
 
-        // Gerar um número ID curto sequencial incremental simples baseado no histórico existente
         const uniqueId = db.length > 0 ? Math.max(...db.map(o => o.id || 0)) + 1 : 1;
         const novasCamisolas = [];
 
