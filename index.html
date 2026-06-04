@@ -213,7 +213,6 @@
 <div class="wp-gestao-container">
     <h2>STADIOPT - Gestão de Encomendas</h2>
 
-    <!-- FORMULÁRIO -->
     <div class="wp-panel">
         <div class="wp-panel-title">Nova Encomenda</div>
         <form id="orderForm">
@@ -257,7 +256,6 @@
         </form>
     </div>
 
-    <!-- FILTROS -->
     <div class="wp-panel">
         <div class="wp-panel-title">Filtros de Pesquisa</div>
         <div class="wp-filter-bar">
@@ -285,7 +283,6 @@
         </div>
     </div>
 
-    <!-- TABELA -->
     <div class="wp-table-container">
         <table>
             <thead>
@@ -308,11 +305,11 @@
 </div>
 
 <script>
-    // AQUI ESTÁ O SEGREDO: Ele tenta ler 'db' ou 'stadiopt_db' para resgatar os teus dados antigos!
-    let Db = JSON.parse(localStorage.getItem('db')) || JSON.parse(localStorage.getItem('stadiopt_db')) || [];
+    // Conecta com precisão às tuas gavetas antigas e novas para resgatar os dados reais
+    let Db = JSON.parse(localStorage.getItem('encomendasCamisolas')) || JSON.parse(localStorage.getItem('db')) || JSON.parse(localStorage.getItem('stadiopt_db')) || [];
 
     function save() {
-        // Guarda em ambos os nomes para nunca mais perderes nada
+        localStorage.setItem('encomendasCamisolas', JSON.stringify(Db));
         localStorage.setItem('db', JSON.stringify(Db));
         localStorage.setItem('stadiopt_db', JSON.stringify(Db));
     }
@@ -355,37 +352,52 @@
         const statusVal = document.getElementById('wp_statusFilter').value;
         const payVal = document.getElementById('wp_payFilter').value;
 
-        Db.forEach((enc) => {
-            const matchesSearch = (enc.cust || '').toLowerCase().includes(searchVal) || (enc.team || '').toLowerCase().includes(searchVal);
-            const matchesStatus = (statusVal === "Todos") || (enc.status === statusVal);
-            const matchesPay = (payVal === "Todos") || (enc.pay === payVal);
+        Db.forEach((enc, index) => {
+            // Mapeamento inteligente para aceitar chaves em português e inglês
+            const cliente = enc.cliente || enc.cust || enc.customer || '—';
+            const equipa = enc.artigo || enc.team || enc.equipa || '—';
+            const customizacao = enc.custom || enc.customizacao || '—';
+            const tamanho = enc.tamanho || enc.size || '—';
+            const quantidade = enc.qty || enc.quantidade || 1;
+            const preco = enc.preco || enc.price || 15.00;
+            const estado = enc.estado || enc.status || 'Pendente';
+            const pagamento = enc.pagamento || enc.pay || 'Não Pago';
+            const displayId = enc.id || (index + 1);
+
+            const matchesSearch = cliente.toLowerCase().includes(searchVal) || equipa.toLowerCase().includes(searchVal);
+            const matchesStatus = (statusVal === "Todos") || (estado === statusVal);
+            const matchesPay = (payVal === "Todos") || (pagamento === payVal);
 
             if (matchesSearch && matchesStatus && matchesPay) {
                 let payClass = 'wp-badge-naopago';
-                if(enc.pay === 'Pago') payClass = 'wp-badge-pago';
-                if(enc.pay === 'Sinal') payClass = 'wp-badge-sinal';
+                if(pagamento === 'Pago') payClass = 'wp-badge-pago';
+                if(pagamento === 'Sinal') payClass = 'wp-badge-sinal';
 
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td><strong>${enc.id}</strong></td>
-                    <td>${enc.cust || '—'}</td>
-                    <td>${enc.team || '—'}</td>
-                    <td>${enc.custom || '—'}</td>
-                    <td><span class="wp-badge wp-badge-tamanho">${enc.size || 'L'}</span></td>
-                    <td>${enc.qty || 1}</td>
-                    <td>${parseFloat(enc.price || 0).toFixed(2)} €</td>
-                    <td><span class="wp-badge ${enc.status === 'Entregue' ? 'wp-badge-entregue' : 'wp-badge-pendente'}">${enc.status || 'Pendente'}</span></td>
-                    <td><span class="wp-badge ${payClass}">${enc.pay || 'Não Pago'}</span></td>
-                    <td><button class="wp-btn-delete-row" onclick="deleteItem(${enc.id})">Eliminar</button></td>
+                    <td><strong>${displayId}</strong></td>
+                    <td>${cliente}</td>
+                    <td>${equipa}</td>
+                    <td>${customizacao}</td>
+                    <td><span class="wp-badge wp-badge-tamanho">${tamanho}</span></td>
+                    <td>${quantidade}</td>
+                    <td>${parseFloat(preco).toFixed(2)} €</td>
+                    <td><span class="wp-badge ${estado === 'Entregue' ? 'wp-badge-entregue' : 'wp-badge-pendente'}">${estado}</span></td>
+                    <td><span class="wp-badge ${payClass}">${pagamento}</span></td>
+                    <td><button class="wp-btn-delete-row" onclick="deleteItem(${displayId}, ${index})">Eliminar</button></td>
                 `;
                 tbody.appendChild(tr);
             }
         });
     }
 
-    function deleteItem(id) {
+    function deleteItem(id, index) {
         if(confirm("Eliminar este registo?")) {
-            Db = Db.filter(item => item.id !== id);
+            if (Db[index] && Db[index].id === id) {
+                Db.splice(index, 1);
+            } else {
+                Db = Db.filter(item => item.id !== id);
+            }
             save();
             refresh();
         }
@@ -399,7 +411,7 @@
         const rows = document.querySelectorAll('.product-row');
 
         rows.forEach(row => {
-            const nextId = Db.length > 0 ? Math.max(...Db.map(i => i.id)) + 1 : 1;
+            const nextId = Db.length > 0 ? Math.max(...Db.map(i => i.id || 0)) + 1 : 1;
             Db.push({
                 id: nextId,
                 cust: inputCust,
