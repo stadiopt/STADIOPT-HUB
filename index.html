@@ -38,7 +38,7 @@
             margin: 0 auto;
         }
 
-        /* --- HEADER STΛDIO (Alterado para Horizontal) --- */
+        /* --- HEADER STΛDIO (Horizontal) --- */
         .dash-header {
             display: flex;
             flex-direction: row;
@@ -46,7 +46,7 @@
             justify-content: center;
             margin-bottom: 30px;
             padding: 24px 0 12px 0;
-            gap: 16px; /* Espaço entre o ícone e o texto */
+            gap: 16px;
         }
 
         .logo-svg {
@@ -59,12 +59,12 @@
             font-size: 28px;
             font-weight: 900;
             margin: 0;
-            letter-spacing: 6px; /* Mantém o estilo desportivo expandido */
+            letter-spacing: 6px;
             color: var(--brand-primary);
             line-height: 1;
         }
 
-        /* --- KPI MENU GRID (Transformado em Menu) --- */
+        /* --- KPI MENU GRID --- */
         .metrics-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -373,7 +373,7 @@
 
 <div class="dashboard-container">
     
-    <!-- BRAND HEADER (AGORA EM HORIZONTAL) -->
+    <!-- BRAND HEADER -->
     <div class="dash-header">
         <svg class="logo-svg" viewBox="0 0 100 100">
             <path d="M50 15 L82 85 L64 85 L50 51 L36 85 L18 85 Z" />
@@ -381,7 +381,7 @@
         <h1>STΛDIO</h1>
     </div>
 
-    <!-- METRICS GRID (MENU DE NAVEGAÇÃO) -->
+    <!-- METRICS GRID / MENU -->
     <div class="metrics-grid">
         <div class="kpi-card" id="menu-novo" onclick="switchSection('novo-sec', 'menu-novo')">
             <span class="kpi-title">✨ Menu Vendas</span>
@@ -481,7 +481,7 @@
 </div>
 
 <script>
-    // Base de dados
+    // Lista de dados atualizada
     const initialData = [
         { id: 1, cust: "Paulo", team: "Portugal Pantera Negra", custom: "", size: "L", qty: 1, price: 15, status: "Entregue", pay: "Pago", tracking: "" },
         { id: 1, cust: "Paulo", team: "Alemanha Preta", custom: "", size: "L", qty: 1, price: 15, status: "Entregue", pay: "Pago", tracking: "" },
@@ -518,6 +518,11 @@
         const localData = localStorage.getItem('stadio_db_final');
         if (localData) {
             db = JSON.parse(localData);
+            // Verifica se a cache antiga tem os novos dados; caso contrário, força atualização rápida
+            if (db.length < initialData.length) { 
+                db = initialData; 
+                salvarDados(); 
+            }
         } else {
             db = initialData;
             salvarDados();
@@ -630,12 +635,11 @@
     }
 
     function refreshUI() {
-        // --- ORDERS RENDER ---
         const container = document.getElementById('cardsContainer');
         container.innerHTML = '';
         
         if(db.length === 0) {
-            container.innerHTML = '<div class="loading-text">Nenhum registo armazenado em cache.</div>';
+            container.innerHTML = '<div class="loading-text">Nenhum registo armazenado.</div>';
         }
 
         const searchVal = document.getElementById('searchFilter').value.toLowerCase();
