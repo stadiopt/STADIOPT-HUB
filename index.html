@@ -481,7 +481,7 @@
 </div>
 
 <script>
-    // Lista de dados atualizada
+    // Lista intocável com os teus dados exatos
     const initialData = [
         { id: 1, cust: "Paulo", team: "Portugal Pantera Negra", custom: "", size: "L", qty: 1, price: 15, status: "Entregue", pay: "Pago", tracking: "" },
         { id: 1, cust: "Paulo", team: "Alemanha Preta", custom: "", size: "L", qty: 1, price: 15, status: "Entregue", pay: "Pago", tracking: "" },
@@ -513,18 +513,15 @@
     ];
 
     let db = [];
+    // Mudança de chave v2 para contornar a cache antiga do browser
+    const CACHE_KEY = 'stadio_db_v2';
 
     function carregarDados() {
-        const localData = localStorage.getItem('stadio_db_final');
+        const localData = localStorage.getItem(CACHE_KEY);
         if (localData) {
             db = JSON.parse(localData);
-            // Verifica se a cache antiga tem os novos dados; caso contrário, força atualização rápida
-            if (db.length < initialData.length) { 
-                db = initialData; 
-                salvarDados(); 
-            }
         } else {
-            db = initialData;
+            db = [...initialData];
             salvarDados();
         }
         calculateMetrics();
@@ -532,7 +529,7 @@
     }
 
     function salvarDados() {
-        localStorage.setItem('stadio_db_final', JSON.stringify(db));
+        localStorage.setItem(CACHE_KEY, JSON.stringify(db));
     }
 
     function switchSection(tabId, cardId) {
