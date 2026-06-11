@@ -373,7 +373,6 @@
 
 <div class="dashboard-container">
     
-    <!-- BRAND HEADER -->
     <div class="dash-header">
         <svg class="logo-svg" viewBox="0 0 100 100">
             <path d="M50 15 L82 85 L64 85 L50 51 L36 85 L18 85 Z" />
@@ -381,7 +380,6 @@
         <h1>STΛDIO</h1>
     </div>
 
-    <!-- METRICS GRID / MENU -->
     <div class="metrics-grid">
         <div class="kpi-card" id="menu-novo" onclick="switchSection('novo-sec', 'menu-novo')">
             <span class="kpi-title">✨ Menu Vendas</span>
@@ -401,7 +399,6 @@
         </div>
     </div>
 
-    <!-- SECTION 1: ORDERS -->
     <div id="lista-sec" class="tab-content active">
         <div class="clean-panel">
             <div class="filter-row">
@@ -426,7 +423,6 @@
         <div class="cards-layout" id="cardsContainer"></div>
     </div>
 
-    <!-- SECTION 2: CLIENTS -->
     <div id="clientes-sec" class="tab-content">
         <div class="clean-panel">
             <input type="text" id="clientSearchFilter" placeholder="Filtrar por nome do cliente...">
@@ -434,7 +430,6 @@
         <div class="cards-layout" id="clientsContainer"></div>
     </div>
 
-    <!-- SECTION 3: NEW ORDER -->
     <div id="novo-sec" class="tab-content">
         <div class="clean-panel">
             <form id="orderForm">
@@ -481,7 +476,7 @@
 </div>
 
 <script>
-    // Lista de dados atualizada
+    // Lista completa atualizada com os 52 artigos fornecidos
     const initialData = [
         { id: 1, cust: "Paulo", team: "Portugal Pantera Negra", custom: "", size: "L", qty: 1, price: 15, status: "Entregue", pay: "Pago", tracking: "" },
         { id: 1, cust: "Paulo", team: "Alemanha Preta", custom: "", size: "L", qty: 1, price: 15, status: "Entregue", pay: "Pago", tracking: "" },
@@ -497,34 +492,57 @@
         { id: 8, cust: "Gerson", team: "Portugal Pantera Negra", custom: "", size: "L", qty: 1, price: 15, status: "Entregue", pay: "Pago", tracking: "" },
         { id: 9, cust: "Paulo", team: "Portugal Pantera Negra", custom: "", size: "XL", qty: 1, price: 15, status: "Entregue", pay: "Pago", tracking: "" },
         { id: 9, cust: "Paulo", team: "Portugal Pantera Negra", custom: "", size: "XL", qty: 1, price: 15, status: "Entregue", pay: "Pago", tracking: "" },
-        { id: 10, cust: "Tamara", team: "Argentina", custom: "", size: "S (W)", qty: 1, price: 15, status: "Encomendado", pay: "Pago", tracking: "" },
-        { id: 11, cust: "Gerson", team: "Atletico Bilbao Verde", custom: "", size: "L", qty: 1, price: 15, status: "Encomendado", pay: "Não pago", tracking: "" },
-        { id: 12, cust: "OLX02", team: "Japao Pokemon", custom: "", size: "M", qty: 1, price: 15, status: "Encomendado", pay: "Não pago", tracking: "" },
-        { id: 12, cust: "OLX02", team: "Japao Pokemon", custom: "", size: "S", qty: 1, price: 15, status: "Encomendado", pay: "Não pago", tracking: "" },
-        { id: 12, cust: "OLX02", team: "Japao Supra", custom: "", size: "M", qty: 1, price: 15, status: "Encomendado", pay: "Não pago", tracking: "" },
-        { id: 12, cust: "OLX02", team: "Japao Slyline", custom: "", size: "M", qty: 1, price: 15, status: "Encomendado", pay: "Não pago", tracking: "" },
-        { id: 13, cust: "Walter", team: "Brasil", custom: "Zezinho 89", size: "XL", qty: 1, price: 15, status: "Encomendado", pay: "Não pago", tracking: "" },
-        { id: 13, cust: "Walter", team: "Brasil", custom: "Gabi G 9", size: "M (W)", qty: 1, price: 15, status: "Encomendado", pay: "Não pago", tracking: "" },
-        { id: 14, cust: "Home", team: "Portugal 2a", custom: "", size: "XL", qty: 1, price: 15, status: "Encomendado", pay: "Pago", tracking: "" },
-        { id: 14, cust: "Home", team: "Portugal Treino Azul", custom: "", size: "S", qty: 1, price: 15, status: "Encomendado", pay: "Pago", tracking: "" },
-        { id: 14, cust: "Home", team: "Portugal", custom: "", size: "M (W)", qty: 1, price: 15, status: "Encomendado", pay: "Pago", tracking: "" },
-        { id: 15, cust: "Barbara", team: "Marrocos 2a", custom: "", size: "L", qty: 1, price: 18, status: "Por Encomendar", pay: "Não pago", tracking: "" },
-        { id: 16, cust: "Vinted", team: "Franca 2a", custom: "Zaïre-Emery", size: "M", qty: 1, price: 18, status: "Por Encomendar", pay: "Não pago", tracking: "" }
+        { id: 10, cust: "Tamara", team: "Argentina", custom: "", size: "S (W)", qty: 1, price: 15, status: "Entregue", pay: "Pago", tracking: "" },
+        { id: 11, cust: "Gerson", team: "Atletico Bilbao Verde", custom: "", size: "L", qty: 1, price: 15, status: "Entregue", pay: "Pago", tracking: "" },
+        { id: 12, cust: "OLX02", team: "Japao Pokemon", custom: "", size: "M", qty: 1, price: 15, status: "Encomendado", pay: "Pago", tracking: "828001" },
+        { id: 12, cust: "OLX02", team: "Japao Pokemon", custom: "", size: "S", qty: 1, price: 15, status: "Encomendado", pay: "Pago", tracking: "828001" },
+        { id: 12, cust: "OLX02", team: "Japao Supra", custom: "", size: "M", qty: 1, price: 15, status: "Encomendado", pay: "Não pago", tracking: "828001" },
+        { id: 12, cust: "OLX02", team: "Japao Slyline", custom: "", size: "M", qty: 1, price: 15, status: "Encomendado", pay: "Não pago", tracking: "828001" },
+        { id: 13, cust: "Walter", team: "Brasil", custom: "Zezinho 89", size: "XL", qty: 1, price: 15, status: "Entregue", pay: "Pago", tracking: "" },
+        { id: 13, cust: "Walter", team: "Brasil", custom: "Gabi G 9", size: "M (W)", qty: 1, price: 15, status: "Entregue", pay: "Pago", tracking: "" },
+        { id: 14, cust: "Home", team: "Portugal 2a", custom: "", size: "XL", qty: 1, price: 15, status: "Entregue", pay: "Pago", tracking: "" },
+        { id: 14, cust: "Home", team: "Portugal Treino Azul", custom: "", size: "S", qty: 1, price: 15, status: "Entregue", pay: "Pago", tracking: "" },
+        { id: 14, cust: "Home", team: "Portugal", custom: "", size: "M (W)", qty: 1, price: 15, status: "Entregue", pay: "Pago", tracking: "" },
+        { id: 15, cust: "Barbara", team: "Marrocos 2a", custom: "", size: "L", qty: 1, price: 18, status: "Encomendado", pay: "Não pago", tracking: "828001" },
+        { id: 16, cust: "Vinted", team: "Franca 2a", custom: "Zaïre-Emery", size: "M", qty: 1, price: 18, status: "Encomendado", pay: "Não pago", tracking: "828001" },
+        { id: 17, cust: "Ricardo", team: "Portugal 26", custom: "", size: "XL", qty: 1, price: 15, status: "Encomendado", pay: "Pago", tracking: "828001" },
+        { id: 17, cust: "Ricardo", team: "Portugal Pantera Negra", custom: "", size: "S", qty: 1, price: 15, status: "Encomendado", pay: "Pago", tracking: "828001" },
+        { id: 17, cust: "Ricardo", team: "Portugal Pantera Negra", custom: "", size: "S", qty: 1, price: 15, status: "Encomendado", pay: "Pago", tracking: "828001" },
+        { id: 17, cust: "Ricardo", team: "Portugal Pantera Negra", custom: "", size: "M", qty: 1, price: 15, status: "Encomendado", pay: "Pago", tracking: "828001" },
+        { id: 17, cust: "Ricardo", team: "Celtics", custom: "", size: "M", qty: 1, price: 0, status: "Encomendado", pay: "Pago", tracking: "828001" },
+        { id: 18, cust: "Home", team: "Portugal 24", custom: "", size: "L", qty: 1, price: 0, status: "Encomendado", pay: "Pago", tracking: "828001" },
+        { id: 19, cust: "Afonso", team: "Brasil", custom: "Afonso Andre 100", size: "M", qty: 1, price: 15, status: "Encomendado", pay: "Pago", tracking: "828001" },
+        { id: 19, cust: "Afonso", team: "Brasil 2a", custom: "Afonso Andre 100", size: "M", qty: 1, price: 18, status: "Encomendado", pay: "Pago", tracking: "828001" },
+        { id: 19, cust: "Afonso", team: "Portugal Pantera Negra", custom: "", size: "M", qty: 1, price: 15, status: "Encomendado", pay: "Pago", tracking: "828001" },
+        { id: 20, cust: "Pedro", team: "Venezuela 26", custom: "", size: "L", qty: 1, price: 15, status: "Encomendado", pay: "Não pago", tracking: "828001" },
+        { id: 21, cust: "Gerson", team: "Kit Argentina", custom: "", size: "6-7", qty: 1, price: 23, status: "Encomendado", pay: "Não pago", tracking: "" },
+        { id: 21, cust: "Gerson", team: "Kit Argentina Alternativo", custom: "", size: "6-7", qty: 1, price: 23, status: "Encomendado", pay: "Não pago", tracking: "" },
+        { id: 21, cust: "Gerson", team: "Portugal Pantera Negra", custom: "", size: "6-7", qty: 1, price: 0, status: "Encomendado", pay: "Não pago", tracking: "" },
+        { id: 22, cust: "Tania", team: "Benfica Vihls", custom: "", size: "M", qty: 1, price: 12, status: "Entregue", pay: "Pago", tracking: "" },
+        { id: 22, cust: "Tania", team: "Japao Skiline", custom: "", size: "M", qty: 1, price: 12, status: "Entregue", pay: "Pago", tracking: "" },
+        { id: 23, cust: "Carla", team: "Argentina (M)", custom: "", size: "L", qty: 1, price: 15, status: "Entregue", pay: "Pago", tracking: "" },
+        { id: 23, cust: "Carla", team: "Argentina Alternativa (M)", custom: "", size: "M", qty: 1, price: 15, status: "Entregue", pay: "Pago", tracking: "" },
+        { id: 24, cust: "Home", team: "Brasil", custom: "Maria 17", size: "XL", qty: 1, price: 0, status: "Entregue", pay: "Pago", tracking: "" },
+        { id: 24, cust: "Home", team: "Portugal Pantera Negra", custom: "Maria 17", size: "XL", qty: 1, price: 0, status: "Entregue", pay: "Pago", tracking: "" },
+        { id: 25, cust: "OLX03", team: "Portugal", custom: "", size: "XXL", qty: 1, price: 15, status: "Entregue", pay: "Pago", tracking: "" },
+        { id: 25, cust: "OLX03", team: "Portugal", custom: "", size: "L", qty: 1, price: 15, status: "Entregue", pay: "Pago", tracking: "" },
+        { id: 26, cust: "Lourenco", team: "Barcelona 25", custom: "", size: "M", qty: 1, price: 18, status: "Encomendado", pay: "Pago", tracking: "" },
+        { id: 27, cust: "Bruno", team: "Kit Portugal Alternativo", custom: "", size: "6-7", qty: 1, price: 25, status: "Entregue", pay: "Pago", tracking: "" },
+        { id: 28, cust: "Vinted", team: "Arsenal", custom: "", size: "L", qty: 1, price: 18, status: "Encomendado", pay: "Não pago", tracking: "" },
+        { id: 29, cust: "Ricardo", team: "Portugal Pantera Negra", custom: "", size: "L", qty: 1, price: 15, status: "Encomendado", pay: "Pago", tracking: "" },
+        { id: 30, cust: "Ricado R.", team: "Portugal Pantera Negra", custom: "", size: "L", qty: 1, price: 15, status: "Encomendado", pay: "Não pago", tracking: "" }
     ];
 
     let db = [];
+    // Nova chave v3 para limpar o lixo residual do local storage do browser
+    const CACHE_KEY = 'stadio_db_v3';
 
     function carregarDados() {
-        const localData = localStorage.getItem('stadio_db_final');
+        const localData = localStorage.getItem(CACHE_KEY);
         if (localData) {
             db = JSON.parse(localData);
-            // Verifica se a cache antiga tem os novos dados; caso contrário, força atualização rápida
-            if (db.length < initialData.length) { 
-                db = initialData; 
-                salvarDados(); 
-            }
         } else {
-            db = initialData;
+            db = [...initialData];
             salvarDados();
         }
         calculateMetrics();
@@ -532,7 +550,7 @@
     }
 
     function salvarDados() {
-        localStorage.setItem('stadio_db_final', JSON.stringify(db));
+        localStorage.setItem(CACHE_KEY, JSON.stringify(db));
     }
 
     function switchSection(tabId, cardId) {
@@ -562,7 +580,7 @@
         let uniqueClients = new Set();
 
         db.forEach(item => {
-            let itemCost = parseFloat(item.price || 15) * (parseInt(item.qty) || 1);
+            let itemCost = parseFloat(item.price || 0) * (parseInt(item.qty) || 1);
             if(item.pay.toLowerCase() !== 'pago') pendingCash += itemCost;
             if(item.cust) uniqueClients.add(item.cust.trim().toLowerCase());
         });
@@ -660,7 +678,7 @@
                 card.innerHTML = `
                     <div class="card-top">
                         <span class="client-name">${enc.cust}</span>
-                        <span class="badge-id">#${enc.id ? enc.id.toString().slice(-4) : '0000'}</span>
+                        <span class="badge-id">#${enc.id ? enc.id.toString() : '00'}</span>
                     </div>
                     <div class="card-details">
                         <div class="detail-line"><span class="detail-label">Modelo:</span><span class="detail-value">${enc.team}</span></div>
